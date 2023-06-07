@@ -2,3 +2,4 @@ node_modules/
 recherche*
 destination*
 package-lock.json
+.env
