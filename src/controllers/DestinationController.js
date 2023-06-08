@@ -36,10 +36,10 @@ class DestinationController {
   }
 
   static async createDestination(req, res) {
-    const { nom, image, description } = req.body;
+    const { nom, urlimage, description } = req.body;
 
     try {
-      const created = await DestinationService.createDestination(nom, image, description);
+      const created = await DestinationService.createDestination(nom, urlimage, description);
       res
         .status(HttpStatus.CREATED.code)
         .json({ message: "La destination a été créé avec succès." });
@@ -52,13 +52,13 @@ class DestinationController {
 
   static async patchDestinationById(req, res) {
     const id = req.params.id;
-    const { nom, image, description } = req.body;
+    const { nom, urlimage, description } = req.body;
 
     try {
       const updated = await DestinationService.patchDestinationById(
         id,
         nom,
-        image,
+        urlimage,
         description
       );
       if (!updated) {

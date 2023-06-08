@@ -39,10 +39,10 @@ class UserController {
   }
 
   static async createUser(req, res) {
-    const { username, email, password } = req.body;
+    const { psuedo, mail, motdepasse } = req.body;
 
     try {
-      const created = await UserService.createUser(username, email, password);
+      const created = await UserService.createUser(psuedo, mail, motdepasse);
       res
         .status(HttpStatus.CREATED.code)
         .json({ message: "L'utilisateur a été créé avec succès." });
@@ -54,10 +54,10 @@ class UserController {
   }
 
   static async authenticateUser(req, res) {
-    const { email, password } = req.body;
+    const { mail, motdepasse } = req.body;
 
     try {
-      const authenticated = await UserService.authenticateUser(email, password);
+      const authenticated = await UserService.authenticateUser(mail, motdepasse);
       if (!authenticated) {
         throw new HttpError(
           HttpStatus.UNAUTHORIZED,
@@ -76,14 +76,14 @@ class UserController {
 
   static async patchUserById(req, res) {
     const userId = req.params.id;
-    const { username, email, password } = req.body;
+    const { psuedo, mail, motdepasse } = req.body;
 
     try {
       const updated = await UserService.patchUserById(
         userId,
-        username,
-        email,
-        password
+        psuedo,
+        mail,
+        motdepasse
       );
       if (!updated) {
         throw new HttpError(
