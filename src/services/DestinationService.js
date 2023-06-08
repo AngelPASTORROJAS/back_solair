@@ -20,7 +20,6 @@ class DestinationService {
     return result.affectedRows > 0;
   }
 
-
   static async patchDestinationById(id, nom, urlimage, description) {
     const params = [];
     const columns = [];
@@ -37,7 +36,7 @@ class DestinationService {
   
     if (description !== undefined) {
       columns.push({ name: "description", value: description });
-      params.push(hashedPassword);
+      params.push(description);
     }
     
     if (columns.length == 0) {
