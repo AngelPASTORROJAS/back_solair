@@ -51,6 +51,12 @@ class DestinationService {
     const query = `UPDATE ${DESTINATION_TABLE} SET ${setClause} WHERE id = ?`;
     const result = await executeQuery(query, params);
     return result.affectedRows > 0;  }
+  
+    static async getRandomDestination() {
+      const query = `SELECT id, nom, urlimage, description FROM ${DESTINATION_TABLE} order by RAND() LIMIT 1`;
+      const [rows] = await executeQuery(query);
+      return rows;
+    }
 }
 
 export { DestinationService };

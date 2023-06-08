@@ -77,6 +77,17 @@ class DestinationController {
     }
   }
 
+  static async getRandomDestination(_req, res) {
+    try {
+      const users = await DestinationService.getRandomDestination();
+      res.status(HttpStatus.OK.code).json(users);
+    } catch (err) {
+      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
+        message: err.message || HttpStatus.INTERNAL_SERVER_ERROR,
+      });
+    }
+  }
+
   static handleError(err, _req, res, _next) {
     const statusCode = err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code;
     res.status(statusCode).json({ message: err.message || HttpStatus.INTERNAL_SERVER_ERROR });
