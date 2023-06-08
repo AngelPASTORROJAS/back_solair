@@ -53,7 +53,7 @@ class DestinationService {
     return result.affectedRows > 0;  }
   
     static async getRandomDestination() {
-      const query = `SELECT id, nom, urlimage, description FROM ${DESTINATION_TABLE} order by RAND() LIMIT 1`;
+      const query = `SELECT id, nom, urlimage, description FROM ${DESTINATION_TABLE} order by RAND() LIMIT 2`;
       const [rows] = await executeQuery(query);
       return rows;
     }
