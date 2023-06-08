@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { UtilisateurRouter } from './routes/UtilisateurRouter.js';
 import { HttpStatus } from './http/httpStatus.js';
+import { DestinationRouter } from './routes/DestinationRouter.js';
 const app = express();
 
 // Middlewares
@@ -15,6 +16,9 @@ app.get('/', (_req, res) => {
 
 // Routes pour la gestion des utilisateurs
 app.use('/api', UtilisateurRouter);
+
+// Routes pour la gestion des destinations
+app.use('/api',DestinationRouter)
 
 // Gestion des erreurs
 app.use((err, _req, res, _next) => {
