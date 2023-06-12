@@ -1,6 +1,6 @@
-import { hash, compare } from "bcrypt";
 import { executeQuery } from "../utils/database.js";
-import { USER_TABLE, HASH_ROUNDS } from "../config.js";
+import { USER_TABLE } from "../config.js";
+import { checkPasswordMatch, encryptPassword } from "../utils/PasswordUtils.js";
 
 class UserService {
   static async getAllUsers() {
@@ -16,7 +16,7 @@ class UserService {
   }
 
   static async createUser(pseudo, mail, motdepasse) {
-    const hashedPassword = await hash(motdepasse, Number(HASH_ROUNDS));
+    const hashedPassword = await encryptPassword(motdepasse);
     const query = `INSERT INTO ${USER_TABLE} (pseudo, mail, motdepasse) VALUES (?, ?, ?)`;
     const result = await executeQuery(query, [pseudo, mail, hashedPassword]);
     return result.affectedRows > 0;
@@ -25,11 +25,11 @@ class UserService {
   static async authenticateUser(mail, motdepasse) {
     const query = `SELECT motdepasse FROM ${USER_TABLE} WHERE mail = ? LIMIT 1`;
     const [rows] = await executeQuery(query, [mail]);
-    return rows.length != 0 && (await compare(motdepasse, rows[0].motdepasse));
+    return rows.length != 0 && (await checkPasswordMatch(motdepasse, rows[0].motdepasse));
   }
 
   static async patchUserById(id, pseudo, mail, motdepasse) {
-    const hashedPassword = motdepasse ? await hash(motdepasse, Number(HASH_ROUNDS)) : null;
+    const hashedPassword = motdepasse ? await encryptPassword(motdepasse) : null;
     const params = [];
     const columns = [];
   
