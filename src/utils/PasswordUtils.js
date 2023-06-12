@@ -1,5 +1,5 @@
 import { hash, compare } from "bcrypt";
-import { HASH_ROUNDS } from "../config";
+import { HASH_ROUNDS } from "../config.js";
 
 const encryptPassword = async (password) => {
   return await hash(password, Number(HASH_ROUNDS));
