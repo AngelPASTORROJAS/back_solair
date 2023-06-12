@@ -46,7 +46,7 @@ class DestinationService {
     params.push(id);
     const query = `UPDATE ${DESTINATION_TABLE} SET ${setClause} WHERE id = ?`;
     const result = await executeQuery(query, params);
-    return result.affectedRows > 0;
+    return result.changedRows > 0;
   }
 
   static async getRandomDestination() {
