@@ -5,9 +5,9 @@ import { ValidateUserInput, ValidateAuthInput } from "../middlewares/UserMiddlew
 const UtilisateurRouter = Router();
 
 UtilisateurRouter.get("/users", UserController.getAllUsers);
-UtilisateurRouter.get("/users/:id", UserController.getUserById);
+UtilisateurRouter.get("/users/:id([0-9]+)", UserController.getUserById);
 UtilisateurRouter.post("/users", ValidateUserInput, UserController.createUser);
 UtilisateurRouter.post("/users/authenticate", ValidateAuthInput, UserController.authenticateUser);
-UtilisateurRouter.patch("/users/:id", UserController.patchUserById);
+UtilisateurRouter.patch("/users/:id([0-9]+)", UserController.patchUserById);
 
 export { UtilisateurRouter };
