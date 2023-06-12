@@ -3,8 +3,8 @@ import { pool } from "../db.js";
 const executeQuery = async (query, params) => {
   const connection = await pool.getConnection();
   try {
-    console.log(query);
-    return await connection.query(query, params);
+    const [rows] = await connection.query(query, params);
+    return rows;
   } catch (error) {
     throw new DatabaseError("Erreur lors de l'exécution de la requête");
   } finally {

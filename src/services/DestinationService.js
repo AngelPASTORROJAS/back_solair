@@ -4,14 +4,12 @@ import { DESTINATION_TABLE } from "../config.js";
 class DestinationService {
   static async getAllDestination() {
     const query = `SELECT id, nom, urlimage, description FROM ${DESTINATION_TABLE}`;
-    const [rows] = await executeQuery(query);
-    return rows;
+    return await executeQuery(query);
   }
 
   static async getDestinationById(id) {
     const query = `SELECT id, nom, urlimage, description FROM ${DESTINATION_TABLE} WHERE id = ? LIMIT 1`;
-    const [row] = await executeQuery(query, [id]);
-    return row;
+    return await executeQuery(query, [id]);
   }
 
   static async createDestination(nom, urlimage, description) {
@@ -25,17 +23,17 @@ class DestinationService {
     const columns = [];
 
     if (nom !== undefined) {
-      columns.push({ name: "nom", value: nom });
+      columns.push({ name: "nom" });
       params.push(nom);
     }
 
     if (urlimage !== undefined) {
-      columns.push({ name: "urlimage", value: urlimage });
+      columns.push({ name: "urlimage" });
       params.push(urlimage);
     }
 
     if (description !== undefined) {
-      columns.push({ name: "description", value: description });
+      columns.push({ name: "description" });
       params.push(description);
     }
 
@@ -53,8 +51,7 @@ class DestinationService {
 
   static async getRandomDestination() {
     const query = `SELECT id, nom, urlimage, description, ville FROM ${DESTINATION_TABLE} order by RAND() LIMIT 1`;
-    const [rows] = await executeQuery(query);
-    return rows;
+    return await executeQuery(query);
   }
 }
 
