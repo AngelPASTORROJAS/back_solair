@@ -23,30 +23,30 @@ class DestinationService {
     const columns = [];
 
     if (nom !== undefined) {
-      columns.push({ name: "nom" });
+      columns.push("nom = ?");
       params.push(nom);
     }
 
     if (urlimage !== undefined) {
-      columns.push({ name: "urlimage" });
+      columns.push("urlimage = ?");
       params.push(urlimage);
     }
 
     if (description !== undefined) {
-      columns.push({ name: "description" });
+      columns.push("description = ?");
       params.push(description);
     }
 
-    if (columns.length == 0) {
+    if (columns.length === 0) {
       return true; // Aucune colonne à mettre à jour
     }
 
-    const setClause = columns.map((column) => `${column.name} = ?`).join(", ");
+    const setClause = columns.join(", ");
 
     params.push(id);
     const query = `UPDATE ${DESTINATION_TABLE} SET ${setClause} WHERE id = ?`;
     const result = await executeQuery(query, params);
-    return result.changedRows > 0;
+    return result.affectedRows > 0;
   }
 
   static async getRandomDestination() {

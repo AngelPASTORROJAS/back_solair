@@ -57,7 +57,7 @@ class UserService {
     params.push(id);
     const query = `UPDATE ${USER_TABLE} SET ${setClause} WHERE id = ?`;
     const result = await executeQuery(query, params);
-    return result.changedRows > 0;
+    return result.affectedRows > 0;
   }
 }
 
