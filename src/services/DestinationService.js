@@ -23,39 +23,39 @@ class DestinationService {
   static async patchDestinationById(id, nom, urlimage, description) {
     const params = [];
     const columns = [];
-  
+
     if (nom !== undefined) {
       columns.push({ name: "nom", value: nom });
       params.push(nom);
     }
-  
+
     if (urlimage !== undefined) {
       columns.push({ name: "urlimage", value: urlimage });
       params.push(urlimage);
     }
-  
+
     if (description !== undefined) {
       columns.push({ name: "description", value: description });
       params.push(description);
     }
-    
+
     if (columns.length == 0) {
       return true; // Aucune colonne à mettre à jour
     }
-    
-    const setClause = columns.map(column => `${column.name} = ?`).join(", ");
-  
-  
+
+    const setClause = columns.map((column) => `${column.name} = ?`).join(", ");
+
     params.push(id);
     const query = `UPDATE ${DESTINATION_TABLE} SET ${setClause} WHERE id = ?`;
     const result = await executeQuery(query, params);
-    return result.affectedRows > 0;  }
-  
-    static async getRandomDestination() {
-      const query = `SELECT id, nom, urlimage, description, ville FROM ${DESTINATION_TABLE} order by RAND() LIMIT 1`;
-      const [rows] = await executeQuery(query);
-      return rows;
-    }
+    return result.affectedRows > 0;
+  }
+
+  static async getRandomDestination() {
+    const query = `SELECT id, nom, urlimage, description, ville FROM ${DESTINATION_TABLE} order by RAND() LIMIT 1`;
+    const [rows] = await executeQuery(query);
+    return rows;
+  }
 }
 
 export { DestinationService };
