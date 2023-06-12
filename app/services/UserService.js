@@ -1,6 +1,6 @@
 import { executeQuery } from "../utils/db.js";
 import { USER_TABLE } from "../config/config.js";
-import { checkPasswordMatch, encryptPassword } from "../utils/PasswordUtils.js";
+import { checkPasswordMatch, encryptPassword } from "../utils/password.js";
 
 class UserService {
   static async getAllUsers() {
