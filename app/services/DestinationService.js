@@ -1,5 +1,5 @@
-import { executeQuery } from "../utils/database.js";
-import { DESTINATION_TABLE } from "../config.js";
+import { executeQuery } from "../utils/db.js";
+import { DESTINATION_TABLE } from "../config/config.js";
 
 class DestinationService {
   static async getAllDestination() {

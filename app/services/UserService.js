@@ -1,5 +1,5 @@
-import { executeQuery } from "../utils/database.js";
-import { USER_TABLE } from "../config.js";
+import { executeQuery } from "../utils/db.js";
+import { USER_TABLE } from "../config/config.js";
 import { checkPasswordMatch, encryptPassword } from "../utils/PasswordUtils.js";
 
 class UserService {
@@ -34,34 +34,32 @@ class UserService {
 
   static async patchUserById(id, pseudo, mail, motdepasse) {
     const params = [];
-    const columns = [];
+    const clause = [];
 
     if (pseudo !== undefined) {
-      columns.push({ name: "pseudo" });
+      clause.push("pseudo = ?");
       params.push(pseudo);
     }
 
     if (mail !== undefined) {
-      columns.push({ name: "mail" });
+      clause.push("mail = ?");
       params.push(mail);
     }
 
     if (motdepasse !== undefined) {
-      columns.push({ name: "motdepasse" });
+      clause.push("motdepasse = ?");
       params.push(await encryptPassword(motdepasse));
     }
-
-    if (columns.length == 0) {
+    if (params.length == 0) {
       return true; // Aucune colonne à mettre à jour
     }
-
-    const setClause = columns.map((column) => `${column.name} = ?`).join(", ");
-
+    const setClause = clause.join(", ");
     params.push(id);
     const query = `UPDATE ${USER_TABLE} SET ${setClause} WHERE id = ?`;
     const result = await executeQuery(query, params);
     return result.changedRows > 0;
   }
 }
+
 
 export { UserService };
