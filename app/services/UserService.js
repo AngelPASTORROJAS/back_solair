@@ -27,7 +27,7 @@ class UserService {
     const query = `SELECT motdepasse FROM ${USER_TABLE} WHERE mail = ? LIMIT 1`;
     const rows = await executeQuery(query, [mail]);
     return (
-      rows.length < 1 &&
+      rows.length > 0 &&
       (await checkPasswordMatch(motdepasse, rows[0].motdepasse))
     );
   }
@@ -60,6 +60,5 @@ class UserService {
     return result.changedRows > 0;
   }
 }
-
 
 export { UserService };
