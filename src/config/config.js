@@ -19,10 +19,12 @@ const DB_CONFIG = Object.freeze({
     connectionLimit: 10,
     queueLimit: 0,
 });
-const USER_TABLE = process.env.USER_TABLE || "Utilisateur";
-const DESTINATION_TABLE = process.env.DESTINATION_TABLE || "Destination";
+const DATABASE=Object.freeze({
+    user: process.env.TABLE_USER || "Utilisateur",
+    destination: process.env.TABLE_DESTINATION || "Destination",
+});
 const HASH_ROUNDS = process.env.HASH_ROUNDS || 10;
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h";
 
 
-export { NODE_ENV, PORT, DB_CONFIG, USER_TABLE, HASH_ROUNDS, DESTINATION_TABLE, JWT_EXPIRATION }
+export { NODE_ENV, PORT, DB_CONFIG, DATABASE, HASH_ROUNDS, JWT_EXPIRATION }

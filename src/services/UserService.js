@@ -1,20 +1,20 @@
 import { executeQuery } from "../utils/db.js";
-import { USER_TABLE } from "../config/config.js";
+import { DATABASE } from "../config/config.js";
 import { checkPasswordMatch, encryptPassword } from "../utils/password.js";
 
 class UserService {
   static async getAllUsers() {
-    const query = `SELECT id, pseudo, mail FROM ${USER_TABLE}`;
+    const query = `SELECT id, pseudo, mail FROM ${DATABASE.user}`;
     return await executeQuery(query);
   }
 
   static async getUserById(id) {
-    const query = `SELECT id, pseudo, mail FROM ${USER_TABLE} WHERE id = ?`;
+    const query = `SELECT id, pseudo, mail FROM ${DATABASE.user} WHERE id = ?`;
     return await executeQuery(query, [id]);
   }
 
   static async createUser(pseudo, mail, motdepasse) {
-    const query = `INSERT INTO ${USER_TABLE} (pseudo, mail, motdepasse) VALUES (?, ?, ?)`;
+    const query = `INSERT INTO ${DATABASE.user} (pseudo, mail, motdepasse) VALUES (?, ?, ?)`;
     const result = await executeQuery(query, [
       pseudo,
       mail,
@@ -24,7 +24,7 @@ class UserService {
   }
 
   static async authenticateUser(mail, motdepasse) {
-    const query = `SELECT motdepasse FROM ${USER_TABLE} WHERE mail = ? LIMIT 1`;
+    const query = `SELECT motdepasse FROM ${DATABASE.user} WHERE mail = ? LIMIT 1`;
     const rows = await executeQuery(query, [mail]);
     return (
       rows.length > 0 &&
@@ -55,7 +55,7 @@ class UserService {
     }
     const setClause = clause.join(", ");
     params.push(id);
-    const query = `UPDATE ${USER_TABLE} SET ${setClause} WHERE id = ?`;
+    const query = `UPDATE ${DATABASE.user} SET ${setClause} WHERE id = ?`;
     const result = await executeQuery(query, params);
     return result.affectedRows > 0;
   }
