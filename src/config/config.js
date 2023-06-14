@@ -2,10 +2,17 @@ import { config } from "dotenv";
 config();
 
 const NODE_ENV = process.env.NODE_ENV;
-const environnement='prod'
 
-if(process.env.NODE_ENV==environnement){
-    config({path:`${environnement}.env`, encoding: 'latin1', override: true})
+const environnement={
+    developpement:'dev',
+    local:'local',
+    preproduction:'pre',
+    production:'prod',
+    test:'test'
+}
+
+if(NODE_ENV){
+    config({path:`env/${environnement[NODE_ENV]}.env`, encoding: 'latin1', override: true})
 }
 
 const PORT = process.env.PORT || 3000;
