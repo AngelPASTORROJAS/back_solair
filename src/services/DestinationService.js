@@ -1,20 +1,19 @@
-import { executeQuery } from "../utils/db.js";
-import { DATABASE } from "../config/config.js";
+import db from "../config/db.js";
 
 class DestinationService {
   static async getAllDestination() {
-    const query = `SELECT id, nom, urlimage, description FROM ${DATABASE.destination}`;
-    return await executeQuery(query);
+    const query = `SELECT id, nom, urlimage, description FROM ${db.destination}`;
+    return db.query(query);
   }
 
   static async getDestinationById(id) {
-    const query = `SELECT id, nom, urlimage, description FROM ${DATABASE.destination} WHERE id = ? LIMIT 1`;
-    return await executeQuery(query, [id]);
+    const query = `SELECT id, nom, urlimage, description FROM ${db.destination} WHERE id = ? LIMIT 1`;
+    return db.query(query, [id]);
   }
 
   static async createDestination(nom, urlimage, description) {
-    const query = `INSERT INTO ${DATABASE.destination} (nom, urlimage, description) VALUES (?, ?, ?)`;
-    const result = await executeQuery(query, [nom, urlimage, description]);
+    const query = `INSERT INTO ${db.destination} (nom, urlimage, description) VALUES (?, ?, ?)`;
+    const result = db.query(query, [nom, urlimage, description]);
     return result.affectedRows > 0;
   }
 
@@ -44,14 +43,14 @@ class DestinationService {
     const setClause = columns.join(", ");
 
     params.push(id);
-    const query = `UPDATE ${DATABASE.destination} SET ${setClause} WHERE id = ?`;
-    const result = await executeQuery(query, params);
+    const query = `UPDATE ${db.destination} SET ${setClause} WHERE id = ?`;
+    const result = db.query(query, params);
     return result.affectedRows > 0;
   }
 
   static async getRandomDestination() {
-    const query = `SELECT id, nom, urlimage, description, ville FROM ${DATABASE.destination} order by RAND() LIMIT 1`;
-    return await executeQuery(query);
+    const query = `SELECT id, nom, urlimage, description, ville FROM ${db.destination} order by RAND() LIMIT 1`;
+    return db.query(query);
   }
 }
 

@@ -1,21 +1,20 @@
-import { executeQuery } from "../utils/db.js";
-import { DATABASE } from "../config/config.js";
+import db from '../config/db.js'
 import { checkPasswordMatch, encryptPassword } from "../utils/password.js";
 
 class UserService {
   static async getAllUsers() {
-    const query = `SELECT id, pseudo, mail FROM ${DATABASE.user}`;
-    return await executeQuery(query);
+    const query = `SELECT id, pseudo, mail FROM ${db.utilisateur}`;
+    return db.query(query);
   }
 
   static async getUserById(id) {
-    const query = `SELECT id, pseudo, mail FROM ${DATABASE.user} WHERE id = ?`;
-    return await executeQuery(query, [id]);
+    const query = `SELECT id, pseudo, mail FROM ${db.utilisateur} WHERE id = ?`;
+    return db.query(query, [id]);
   }
 
   static async createUser(pseudo, mail, motdepasse) {
-    const query = `INSERT INTO ${DATABASE.user} (pseudo, mail, motdepasse) VALUES (?, ?, ?)`;
-    const result = await executeQuery(query, [
+    const query = `INSERT INTO ${db.utilisateur} (pseudo, mail, motdepasse) VALUES (?, ?, ?)`;
+    const result = db.query(query, [
       pseudo,
       mail,
       await encryptPassword(motdepasse),
@@ -24,8 +23,8 @@ class UserService {
   }
 
   static async authenticateUser(mail, motdepasse) {
-    const query = `SELECT motdepasse FROM ${DATABASE.user} WHERE mail = ? LIMIT 1`;
-    const rows = await executeQuery(query, [mail]);
+    const query = `SELECT motdepasse FROM ${db.utilisateur} WHERE mail = ? LIMIT 1`;
+    const rows = db.query(query, [mail]);
     return (
       rows.length > 0 &&
       (await checkPasswordMatch(motdepasse, rows[0].motdepasse))
@@ -55,8 +54,8 @@ class UserService {
     }
     const setClause = clause.join(", ");
     params.push(id);
-    const query = `UPDATE ${DATABASE.user} SET ${setClause} WHERE id = ?`;
-    const result = await executeQuery(query, params);
+    const query = `UPDATE ${db.utilisateur} SET ${setClause} WHERE id = ?`;
+    const result = db.query(query, params);
     return result.affectedRows > 0;
   }
 }

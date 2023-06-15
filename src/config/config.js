@@ -16,22 +16,15 @@ if(NODE_ENV){
 }
 
 const PORT = process.env.PORT || 3000;
-const DB_CONFIG = Object.freeze({
-    host: process.env.DB_HOST || "exempleHost",
-    user: process.env.DB_USER || "exempleUser",
-    password: process.env.DB_PASSWORD || "exemplePassword",
-    database: process.env.DB_DATABASE || "exempleDatabase",
-    port: process.env.DB_PORT || 3454,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-});
-const DATABASE=Object.freeze({
-    user: process.env.TABLE_USER || "Utilisateur",
-    destination: process.env.TABLE_DESTINATION || "Destination",
-});
+
+const DB_HOST = process.env.DB_HOST
+const DB_USER = process.env.DB_USER
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_DATABASE = process.env.DB_DATABASE
+const DB_PORT = process.env.DB_PORT
+
 const HASH_ROUNDS = process.env.HASH_ROUNDS || 10;
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h";
 
 
-export { NODE_ENV, PORT, DB_CONFIG, DATABASE, HASH_ROUNDS, JWT_EXPIRATION }
+export { NODE_ENV, PORT, HASH_ROUNDS, JWT_EXPIRATION, DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, DB_PORT }
