@@ -1,5 +1,5 @@
 import { HttpError, HttpStatus } from "../http/httpStatus.js";
-import { UserService } from "../services/UserService.js";
+import UserService from "../services/UserService.js";
 
 const MESSAGE_USER_NOT_FOUND = (id) =>
   `L'utilisateur avec l'ID ${id} n'a pas été trouvé.`;
@@ -8,9 +8,13 @@ const MESSAGE_AUTHENTICATION_ERROR =
   "L'adresse e-mail ou le mot de passe est incorrect.";
 
 class UserController {
-  static async getAllUsers(_req, res) {
+  constructor() {
+    this.userService = new UserService();
+  }
+  
+  getAllUsers = async (_req, res) => { //! besoin de fonction fléché pour avoir le this de la classe
     try {
-      const users = await UserService.getAllUsers();
+      const users = await this.userService.getAllUsers();
       res.status(HttpStatus.OK.code).json(users);
     } catch (err) {
       res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
@@ -19,11 +23,11 @@ class UserController {
     }
   }
 
-  static async getUserById(req, res) {
+  getUserById = async (req, res) => {
     const userId = req.params.id;
 
     try {
-      const user = await UserService.getUserById(userId);
+      const user = await this.userService.getUserById(userId);
       if (!user || user.length == 0) {
         throw new HttpError(
           HttpStatus.NOT_FOUND,
@@ -38,11 +42,11 @@ class UserController {
     }
   }
 
-  static async createUser(req, res) {
+  createUser = async (req, res) => {
     const { psuedo, mail, motdepasse } = req.body;
 
     try {
-      const created = await UserService.createUser(psuedo, mail, motdepasse);
+      const created = await this.userService.createUser(psuedo, mail, motdepasse);
       res
         .status(HttpStatus.CREATED.code)
         .json({ message: "L'utilisateur a été créé avec succès." });
@@ -53,11 +57,11 @@ class UserController {
     }
   }
 
-  static async authenticateUser(req, res) {
+  authenticateUser = async (req, res) => {
     const { mail, motdepasse } = req.body;
 
     try {
-      const authenticated = await UserService.authenticateUser(mail, motdepasse);
+      const authenticated = await this.userService.authenticateUser(mail, motdepasse);
       if (!authenticated) {
         throw new HttpError(
           HttpStatus.UNAUTHORIZED,
@@ -74,12 +78,12 @@ class UserController {
     }
   }
 
-  static async patchUserById(req, res) {
+  patchUserById = async (req, res) => {
     const userId = req.params.id;
     const { psuedo, mail, motdepasse } = req.body;
 
     try {
-      const updated = await UserService.patchUserById(
+      const updated = await this.userService.patchUserById(
         userId,
         psuedo,
         mail,
@@ -101,10 +105,10 @@ class UserController {
     }
   }
 
-  static handleError(err, _req, res, _next) {
+  handleError = (err, _req, res, _next) => {
     const statusCode = err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code;
     res.status(statusCode).json({ message: err.message || HttpStatus.INTERNAL_SERVER_ERROR });
   }
 }
 
-export { UserController };
+export default UserController ;

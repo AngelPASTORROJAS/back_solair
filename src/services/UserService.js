@@ -1,34 +1,37 @@
-import db from '../config/db.js'
+import DataBase from '../config/db.js'
 import { checkPasswordMatch, encryptPassword } from "../utils/password.js";
 
 class UserService {
-  static async getAllUsers() {
-    const sql = `SELECT id, pseudo, mail FROM ${db.utilisateur}`;
-    return db.query(sql);
+  constructor() {
+    this._db = new DataBase();
+  }
+  getAllUsers = async () => {
+    const sql = `SELECT id, pseudo, mail FROM ${this._db.utilisateur}`;
+    return this._db.query(sql);
   }
 
-  static async getUserById(id) {
-    const sql = `SELECT id, pseudo, mail FROM ${db.utilisateur} WHERE id = ?`;
-    return db.query(sql, [id]);
+  getUserById = async (id) => {
+    const sql = `SELECT id, pseudo, mail FROM ${this._db.utilisateur} WHERE id = ?`;
+    return this._db.query(sql, [id]);
   }
 
-  static async createUser(pseudo, mail, motdepasse) {
-    const sql = `INSERT INTO ${db.utilisateur} (pseudo, mail, motdepasse) VALUES (?, ?, ?)`;
+  createUser = async (pseudo, mail, motdepasse) => {
+    const sql = `INSERT INTO ${this._db.utilisateur} (pseudo, mail, motdepasse) VALUES (?, ?, ?)`;
     const values = [ pseudo,mail, await encryptPassword(motdepasse) ];
-    const result = db.query(sql, values);
+    const result = this._db.query(sql, values);
     return result.affectedRows > 0;
   }
 
-  static async authenticateUser(mail, motdepasse) {
-    const sql = `SELECT motdepasse FROM ${db.utilisateur} WHERE mail = ? LIMIT 1`;
-    const rows = db.query(sql, [mail]);
+  authenticateUser = async (mail, motdepasse) => {
+    const sql = `SELECT motdepasse FROM ${this._db.utilisateur} WHERE mail = ? LIMIT 1`;
+    const rows = this._db.query(sql, [mail]);
     return (
       rows.length > 0 &&
       (await checkPasswordMatch(motdepasse, rows[0].motdepasse))
     );
   }
 
-  static async patchUserById(id, pseudo, mail, motdepasse) {
+  patchUserById = async (id, pseudo, mail, motdepasse) => {
     const values = [];
     const clause = [];
 
@@ -51,10 +54,10 @@ class UserService {
     }
     const setClause = clause.join(", ");
     values.push(id);
-    const sql = `UPDATE ${db.utilisateur} SET ${setClause} WHERE id = ?`;
-    const result = db.query(sql, values);
+    const sql = `UPDATE ${this._db.utilisateur} SET ${setClause} WHERE id = ?`;
+    const result = this._db.query(sql, values);
     return result.affectedRows > 0;
   }
 }
 
-export { UserService };
+export default UserService

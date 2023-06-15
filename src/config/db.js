@@ -56,4 +56,4 @@ class DatabaseError extends Error {
   }
 }
 
-export default new Database();
+export default Database;
