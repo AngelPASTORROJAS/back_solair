@@ -1,13 +1,20 @@
 import { Router } from "express";
 import { UserController } from "../controllers/UserController.js";
 import { ValidateUserInput, ValidateAuthInput } from "../middlewares/UserMiddleware.js";
+import apicache from "apicache";
 
-const UtilisateurRouter = Router();
+class UtilisateurRouter extends Router {
+  constructor() {
+    super();
 
-UtilisateurRouter.get("/users", UserController.getAllUsers);
-UtilisateurRouter.get("/users/:id([0-9]+)", UserController.getUserById);
-UtilisateurRouter.post("/users", ValidateUserInput, UserController.createUser);
-UtilisateurRouter.post("/users/authenticate", ValidateAuthInput, UserController.authenticateUser);
-UtilisateurRouter.patch("/users/:id([0-9]+)", UserController.patchUserById);
+    this
+        .get("/users", apicache.middleware("5 minutes"), UserController.getAllUsers)
+        .get("/users/:id([0-9]+)", apicache.middleware("5 minutes"), UserController.getUserById)
+        .post("/users", ValidateUserInput, UserController.createUser)
+        .post("/users/authenticate", ValidateAuthInput, UserController.authenticateUser)
+        .patch("/users/:id([0-9]+)", UserController.patchUserById);
+  }
+}
+
 
 export { UtilisateurRouter };

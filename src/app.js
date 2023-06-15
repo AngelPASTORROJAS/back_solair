@@ -17,7 +17,7 @@ app.get('/', (_req, res) => {
 });
 
 // Routes pour la gestion des utilisateurs
-app.use('/api', UtilisateurRouter);
+app.use('/api', new UtilisateurRouter());
 
 // Routes pour la gestion des destinations
 app.use('/api',DestinationRouter)
