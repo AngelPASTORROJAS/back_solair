@@ -3,7 +3,7 @@ import { checkPasswordMatch, encryptPassword } from "../utils/password.js";
 
 class UserService {
   constructor() {
-    this._db = new DataBase();
+    this._db = Object.freeze(new DataBase());
   }
   getAllUsers = async () => {
     const sql = `SELECT id, pseudo, mail FROM ${this._db.utilisateur}`;
