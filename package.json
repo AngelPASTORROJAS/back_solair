@@ -4,7 +4,6 @@
   "description": "api-solair",
   "main": "index.js",
   "type": "module",
-  "files": [],
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
