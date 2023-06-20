@@ -56,4 +56,5 @@ class DatabaseError extends Error {
   }
 }
 
-export default Database;
+const db = Object.freeze(new Database())
+export { db };

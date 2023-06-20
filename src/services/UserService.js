@@ -1,30 +1,31 @@
-import DataBase from '../config/db.js'
+import { db } from '../config/db.js'
 import { checkPasswordMatch, encryptPassword } from "../utils/password.js";
 
 class UserService {
+  #db;
   constructor() {
-    this._db = Object.freeze(new DataBase());
+    this.#db = db;
   }
   getAllUsers = async () => {
-    const sql = `SELECT id, pseudo, mail FROM ${this._db.utilisateur}`;
-    return this._db.query(sql);
+    const sql = `SELECT id, pseudo, mail FROM ${this.#db.utilisateur}`;
+    return this.#db.query(sql);
   }
 
   getUserById = async (id) => {
-    const sql = `SELECT id, pseudo, mail FROM ${this._db.utilisateur} WHERE id = ?`;
-    return this._db.query(sql, [id]);
+    const sql = `SELECT id, pseudo, mail FROM ${this.#db.utilisateur} WHERE id = ?`;
+    return this.#db.query(sql, [id]);
   }
 
   createUser = async (pseudo, mail, motdepasse) => {
-    const sql = `INSERT INTO ${this._db.utilisateur} (pseudo, mail, motdepasse) VALUES (?, ?, ?)`;
+    const sql = `INSERT INTO ${this.#db.utilisateur} (pseudo, mail, motdepasse) VALUES (?, ?, ?)`;
     const values = [ pseudo,mail, await encryptPassword(motdepasse) ];
-    const result = this._db.query(sql, values);
+    const result = this.#db.query(sql, values);
     return result.affectedRows > 0;
   }
 
   authenticateUser = async (mail, motdepasse) => {
-    const sql = `SELECT motdepasse FROM ${this._db.utilisateur} WHERE mail = ? LIMIT 1`;
-    const rows = this._db.query(sql, [mail]);
+    const sql = `SELECT motdepasse FROM ${this.#db.utilisateur} WHERE mail = ? LIMIT 1`;
+    const rows = this.#db.query(sql, [mail]);
     return (
       rows.length > 0 &&
       (await checkPasswordMatch(motdepasse, rows[0].motdepasse))
@@ -54,10 +55,11 @@ class UserService {
     }
     const setClause = clause.join(", ");
     values.push(id);
-    const sql = `UPDATE ${this._db.utilisateur} SET ${setClause} WHERE id = ?`;
-    const result = this._db.query(sql, values);
+    const sql = `UPDATE ${this.#db.utilisateur} SET ${setClause} WHERE id = ?`;
+    const result = this.#db.query(sql, values);
     return result.affectedRows > 0;
   }
 }
 
-export default UserService
+const utilisateurService = Object.freeze(new UserService());
+export { utilisateurService }

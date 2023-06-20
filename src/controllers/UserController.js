@@ -1,5 +1,5 @@
 import { HttpError, HttpStatus } from "../http/httpStatus.js";
-import UserService from "../services/UserService.js";
+import { utilisateurService } from "../services/UserService.js";
 
 const MESSAGE_USER_NOT_FOUND = (id) =>
   `L'utilisateur avec l'ID ${id} n'a pas été trouvé.`;
@@ -9,7 +9,7 @@ const MESSAGE_AUTHENTICATION_ERROR =
 
 class UserController {
   constructor() {
-    this.userService = new UserService();
+    this.userService = utilisateurService;
   }
   
   getAllUsers = async (_req, res) => { //! besoin de fonction fléché pour avoir le this de la classe
@@ -111,4 +111,5 @@ class UserController {
   }
 }
 
-export default UserController ;
+const utilisateurController = Object.freeze(new UserController())
+export { utilisateurController }
