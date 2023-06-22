@@ -1,39 +1,60 @@
 import { db } from "../config/db.js";
+import { entitySchema } from "../models/EntitySchema.js";
 
 class DestinationService {
-  static async getAllDestination() {
-    const sql = `SELECT id, nom, urlimage, description FROM ${db.destination}`;
-    return db.query(sql);
+  #db;
+  #table;
+  #columns;
+  constructor() {
+    this.#db = db;
+    this.#columns = entitySchema.destination.columns;
+    this.#table = entitySchema.destination.tableName; 
   }
 
-  static async getDestinationById(id) {
-    const sql = `SELECT id, nom, urlimage, description FROM ${db.destination} WHERE id = ? LIMIT 1`;
-    return db.query(sql, [id]);
+  getAllDestination = async ( ) => {
+    const sql = `SELECT ${this.#columns.id}, 
+        ${this.#columns.nom}, 
+        ${this.#columns.image_url}, 
+        ${this.#columns.description} 
+      FROM ${this.#table}`;
+    return this.#db.query(sql);
   }
 
-  static async createDestination(nom, urlimage, description) {
-    const sql = `INSERT INTO ${db.destination} (nom, urlimage, description) VALUES (?, ?, ?)`;
+  getDestinationById = async ( id) => {
+    const sql = `SELECT ${this.#columns.id}, 
+        ${this.#columns.nom}, 
+        ${this.#columns.image_url}, 
+        ${this.#columns.description} 
+      FROM ${this.#table} 
+      WHERE ${this.#columns.id} = ? LIMIT 1`;
+    return this.#db.query(sql, [id]);
+  }
+
+  createDestination = async ( nom, urlimage, description) => {
+    const sql = `INSERT INTO ${this.#table} 
+        (${this.#columns.nom}, ${this.#columns.image_url}, ${this.#columns.description}) 
+      VALUES (?, ?, ?)`;
     const values = [nom, urlimage, description];
-    const result = db.query(sql, values);
+    const result = this.#db.query(sql, values);
     return result.affectedRows > 0;
   }
 
-  static async patchDestinationById(id, nom, urlimage, description) {
+  patchDestinationById = async ( id, nom, urlimage, description) => {
     const values = [];
     const columns = [];
 
     if (nom !== undefined) {
-      columns.push("nom = ?");
+      columns.push(`${this.#columns.nom} = ?`);
       values.push(nom);
     }
 
     if (urlimage !== undefined) {
-      columns.push("urlimage = ?");
+      columns.push(`${this.#columns.image_url} = ?`);
       values.push(urlimage);
     }
 
     if (description !== undefined) {
-      columns.push("description = ?");
+      columns.push(`${this.#columns.description} = ?`);
       values.push(description);
     }
 
@@ -44,15 +65,22 @@ class DestinationService {
     const setClause = columns.join(", ");
 
     values.push(id);
-    const sql = `UPDATE ${db.destination} SET ${setClause} WHERE id = ?`;
-    const result = db.query(sql, values);
+    const sql = `UPDATE ${this.#table} SET ${setClause} WHERE ${this.#columns.id} = ?`;
+    const result = this.#db.query(sql, values);
     return result.affectedRows > 0;
   }
 
-  static async getRandomDestination() {
-    const sql = `SELECT id, nom, urlimage, description, ville FROM ${db.destination} order by RAND() LIMIT 1`;
-    return db.query(sql);
+  getRandomDestination = async ( ) => {
+    const sql = `SELECT ${this.#columns.id}, 
+        ${this.#columns.nom}, 
+        ${this.#columns.image_url}, 
+        ${this.#columns.description}, 
+        ${this.#columns.description} 
+      FROM ${this.#table} order by RAND() LIMIT 1`;
+    return this.#db.query(sql);
   }
 }
 
-export { DestinationService };
+const destinationService = Object.freeze(new DestinationService());
+
+export { destinationService };

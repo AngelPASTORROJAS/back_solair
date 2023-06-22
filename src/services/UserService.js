@@ -4,36 +4,34 @@ import { entitySchema } from "../models/EntitySchema.js";
 
 class UserService {
   #db;
-  #userTable;
-  #userColumns;
+  #table;
+  #columns;
   constructor() {
     this.#db = db;
-    this.#userColumns = entitySchema.utilisateur.columns;
-    this.#userTable = entitySchema.utilisateur.tableName; 
+    this.#columns = entitySchema.utilisateur.columns;
+    this.#table = entitySchema.utilisateur.tableName; 
   }
 
   getAllUsers = async () => {
-    const sql = `SELECT 
-        ${this.#userColumns.id}, 
-        ${this.#userColumns.pseudo},
-        ${this.#userColumns.mail} 
-      FROM ${this.#userTable}`;
+    const sql = `SELECT ${this.#columns.id}, 
+        ${this.#columns.pseudo},
+        ${this.#columns.mail} 
+      FROM ${this.#table}`;
     return this.#db.query(sql);
   };
 
   getUserById = async (id) => {
-    const sql = `SELECT 
-        ${this.#userColumns.id}, 
-        ${this.#userColumns.pseudo}, 
-        ${this.#userColumns.mail} 
-      FROM ${this.#userTable} 
-      WHERE ${this.#userColumns.id} = ?`;
+    const sql = `SELECT ${this.#columns.id}, 
+        ${this.#columns.pseudo}, 
+        ${this.#columns.mail} 
+      FROM ${this.#table} 
+      WHERE ${this.#columns.id} = ?`;
     return this.#db.query(sql, [id]);
   };
 
   createUser = async (pseudo, mail, motdepasse) => {
-    const sql = `INSERT INTO ${this.#userTable} 
-      (${this.#userColumns.pseudo}, ${this.#userColumns.mail}, ${this.#userColumns.mail}) 
+    const sql = `INSERT INTO ${this.#table} 
+      (${this.#columns.pseudo}, ${this.#columns.mail}, ${this.#columns.mail}) 
     VALUES 
       (?, ?, ?)`;
     const values = [pseudo, mail, await encryptPassword(motdepasse)];
@@ -42,9 +40,9 @@ class UserService {
   };
 
   authenticateUser = async (mail, motdepasse) => {
-    const sql = `SELECT ${this.#userColumns.password} 
-      FROM ${this.#userTable}
-      WHERE ${this.#userColumns.mail} = ? LIMIT 1`;
+    const sql = `SELECT ${this.#columns.password} 
+      FROM ${this.#table}
+      WHERE ${this.#columns.mail} = ? LIMIT 1`;
     const rows = this.#db.query(sql, [mail]);
     return (
       rows.length > 0 &&
@@ -57,17 +55,17 @@ class UserService {
     const clause = [];
 
     if (pseudo !== undefined) {
-      clause.push(`${this.#userColumns.pseudo} = ?`);
+      clause.push(`${this.#columns.pseudo} = ?`);
       values.push(pseudo);
     }
 
     if (mail !== undefined) {
-      clause.push(`${this.#userColumns.mail} = ?`);
+      clause.push(`${this.#columns.mail} = ?`);
       values.push(mail);
     }
 
     if (motdepasse !== undefined) {
-      clause.push(`${this.#userColumns.password} = ?`);
+      clause.push(`${this.#columns.password} = ?`);
       values.push(await encryptPassword(motdepasse));
     }
     if (values.length == 0) {
@@ -75,9 +73,9 @@ class UserService {
     }
     const setClause = clause.join(", ");
     values.push(id);
-    const sql = `UPDATE ${this.#userTable} 
+    const sql = `UPDATE ${this.#table} 
       SET ${setClause}
-      WHERE ${this.#userColumns.id} = ?`;
+      WHERE ${this.#columns.id} = ?`;
     const result = this.#db.query(sql, values);
     return result.affectedRows > 0;
   };

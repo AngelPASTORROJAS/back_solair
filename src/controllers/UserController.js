@@ -1,25 +1,19 @@
 import { HttpError, HttpStatus } from "../http/httpStatus.js";
 import { utilisateurService } from "../services/UserService.js";
 
-const MESSAGE_USER_NOT_FOUND = (id) =>
-  `L'utilisateur avec l'ID ${id} n'a pas été trouvé.`;
-
-const MESSAGE_AUTHENTICATION_ERROR =
-  "L'adresse e-mail ou le mot de passe est incorrect.";
-
 class UserController {
+  #userService;
   constructor() {
-    this.userService = utilisateurService;
+    this.#userService = utilisateurService;
   }
   
   getAllUsers = async (_req, res) => { //! besoin de fonction fléché pour avoir le this de la classe
     try {
-      const users = await this.userService.getAllUsers();
+      const users = await this.#userService.getAllUsers();
+      if (!users) { throw new HttpError(HttpStatus.NOT_FOUND) }
       res.status(HttpStatus.OK.code).json(users);
     } catch (err) {
-      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
-        message: err.message || HttpStatus.INTERNAL_SERVER_ERROR,
-      });
+      this.handleError(err, res);
     }
   }
 
@@ -27,85 +21,50 @@ class UserController {
     const userId = req.params.id;
 
     try {
-      const user = await this.userService.getUserById(userId);
-      if (!user || user.length == 0) {
-        throw new HttpError(
-          HttpStatus.NOT_FOUND,
-          MESSAGE_USER_NOT_FOUND(userId)
-        );
-      }
+      const user = await this.#userService.getUserById(userId);
+      if (user?.length == 0) { throw new HttpError(HttpStatus.NOT_FOUND) }
       res.status(HttpStatus.OK.code).json(user);
     } catch (err) {
-      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
-        message: err.message || "L'utilisateur n'a pas été trouvé.",
-      });
+      this.handleError(err, res);
     }
   }
 
   createUser = async (req, res) => {
     const { psuedo, mail, motdepasse } = req.body;
-
     try {
-      const created = await this.userService.createUser(psuedo, mail, motdepasse);
-      res
-        .status(HttpStatus.CREATED.code)
-        .json({ message: "L'utilisateur a été créé avec succès." });
+      const created = await this.#userService.createUser(psuedo, mail, motdepasse);
+      if(!created){ throw new HttpError(HttpStatus.INTERNAL_SERVER_ERROR) }
+      res.status(HttpStatus.CREATED.code).json({ message: HttpStatus.CREATED.message });
     } catch (err) {
-      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
-        message: err.message || HttpStatus.INTERNAL_SERVER_ERROR,
-      });
+      this.handleError(err, res);
     }
   }
 
   authenticateUser = async (req, res) => {
     const { mail, motdepasse } = req.body;
-
     try {
-      const authenticated = await this.userService.authenticateUser(mail, motdepasse);
-      if (!authenticated) {
-        throw new HttpError(
-          HttpStatus.UNAUTHORIZED,
-          MESSAGE_AUTHENTICATION_ERROR
-        );
-      }
-      res
-        .status(HttpStatus.OK.code)
-        .json({ message: "L'utilisateur est authentifié." });
+      const authenticated = await this.#userService.authenticateUser(mail, motdepasse);
+      if (!authenticated) { throw new HttpError(HttpStatus.UNAUTHORIZED) }
+      res.status(HttpStatus.NO_CONTENT.code).json({ message: "L'utilisateur est authentifié." });
     } catch (err) {
-      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
-        message: err.message || HttpStatus.INTERNAL_SERVER_ERROR,
-      });
+      this.handleError(err, res);
     }
   }
 
   patchUserById = async (req, res) => {
     const userId = req.params.id;
-    const { psuedo, mail, motdepasse } = req.body;
+    const { pseudo, mail, motdepasse } = req.body;
 
     try {
-      const updated = await this.userService.patchUserById(
-        userId,
-        psuedo,
-        mail,
-        motdepasse
-      );
-      if (!updated) {
-        throw new HttpError(
-          HttpStatus.NOT_FOUND,
-          MESSAGE_USER_NOT_FOUND(userId)
-        );
-      }
-      res
-        .status(HttpStatus.OK.code)
-        .json({ message: "L'utilisateur a été mis à jour avec succès." });
+      const updated = await this.#userService.patchUserById(userId,pseudo,mail,motdepasse);
+      if (!updated) { throw new HttpError(HttpStatus.NOT_FOUND,MESSAGE_USER_NOT_FOUND(userId)) }
+      res.status(HttpStatus.OK.code).json({ message: "L'utilisateur a été mis à jour avec succès." });
     } catch (err) {
-      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
-        message: err.message || HttpStatus.INTERNAL_SERVER_ERROR,
-      });
+      this.handleError(err, res);
     }
   }
 
-  handleError = (err, _req, res, _next) => {
+  handleError = (err, res) => {
     const statusCode = err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code;
     res.status(statusCode).json({ message: err.message || HttpStatus.INTERNAL_SERVER_ERROR });
   }

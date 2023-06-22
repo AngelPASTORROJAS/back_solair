@@ -1,5 +1,5 @@
 import { HttpError, HttpStatus } from "../http/httpStatus.js";
-import { DestinationService } from "../services/DestinationService.js";
+import { destinationService } from "../services/DestinationService.js";
 
 const MESSAGE_DESTINATION_NOT_FOUND = (id) =>
   `La destination avec l'ID ${id} n'a pas été trouvé.`;
@@ -7,7 +7,7 @@ const MESSAGE_DESTINATION_NOT_FOUND = (id) =>
 class DestinationController {
   static async getAllDestination(_req, res) {
     try {
-      const users = await DestinationService.getAllDestination();
+      const users = await destinationService.getAllDestination();
       res.status(HttpStatus.OK.code).json(users);
     } catch (err) {
       res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
@@ -20,7 +20,7 @@ class DestinationController {
     const id = req.params.id;
 
     try {
-      const user = await DestinationService.getDestinationById(id);
+      const user = await destinationService.getDestinationById(id);
       if (!user || user.length == 0) {
         throw new HttpError(
           HttpStatus.NOT_FOUND,
@@ -39,7 +39,7 @@ class DestinationController {
     const { nom, urlimage, description } = req.body;
 
     try {
-      const created = await DestinationService.createDestination(nom, urlimage, description);
+      const created = await destinationService.createDestination(nom, urlimage, description);
       res
         .status(HttpStatus.CREATED.code)
         .json({ message: "La destination a été créé avec succès." });
@@ -55,7 +55,7 @@ class DestinationController {
     const { nom, urlimage, description } = req.body;
 
     try {
-      const updated = await DestinationService.patchDestinationById(
+      const updated = await destinationService.patchDestinationById(
         id,
         nom,
         urlimage,
@@ -79,7 +79,7 @@ class DestinationController {
 
   static async getRandomDestination(_req, res) {
     try {
-      const users = await DestinationService.getRandomDestination();
+      const users = await destinationService.getRandomDestination();
       res.status(HttpStatus.OK.code).json(users);
     } catch (err) {
       res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
