@@ -53,29 +53,24 @@ class UserService {
   patchUserById = async (id, pseudo, mail, motdepasse) => {
     const values = [];
     const clause = [];
-
-    if (pseudo !== undefined) {
-      clause.push(`${this.#columns.pseudo} = ?`);
+    if(!pseudo || !mail || !motdepasse ){
+      return true;
+    }
+    if (pseudo) {
+      clause.push(`${this.#columns.pseudo}`);
       values.push(pseudo);
     }
-
-    if (mail !== undefined) {
-      clause.push(`${this.#columns.mail} = ?`);
+    if (mail) {
+      clause.push(`${this.#columns.mail}`);
       values.push(mail);
     }
-
-    if (motdepasse !== undefined) {
-      clause.push(`${this.#columns.password} = ?`);
+    if (motdepasse) {
+      clause.push(`${this.#columns.password}`);
       values.push(await encryptPassword(motdepasse));
     }
-    if (values.length == 0) {
-      return true; // Aucune colonne à mettre à jour
-    }
-    const setClause = clause.join(", ");
+    const setClause = clause.join(" = ?, ");
     values.push(id);
-    const sql = `UPDATE ${this.#table} 
-      SET ${setClause}
-      WHERE ${this.#columns.id} = ?`;
+    const sql = `UPDATE ${this.#table} SET ${setClause}  WHERE ${this.#columns.id} = ?`;
     const result = this.#db.query(sql, values);
     return result.affectedRows > 0;
   };
