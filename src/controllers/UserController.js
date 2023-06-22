@@ -57,13 +57,14 @@ class UserController {
 
     try {
       const updated = await this.#userService.patchUserById(userId,pseudo,mail,motdepasse);
-      if (!updated) { throw new HttpError(HttpStatus.NOT_FOUND,MESSAGE_USER_NOT_FOUND(userId)) }
+      if (!updated) { throw new HttpError(HttpStatus.NOT_FOUND) }
       res.status(HttpStatus.OK.code).json({ message: "L'utilisateur a été mis à jour avec succès." });
     } catch (err) {
       this.handleError(err, res);
     }
   }
 
+  /**@private */
   handleError = (err, res) => {
     const statusCode = err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code;
     res.status(statusCode).json({ message: err.message || HttpStatus.INTERNAL_SERVER_ERROR });

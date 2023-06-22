@@ -1,97 +1,74 @@
 import { HttpError, HttpStatus } from "../http/httpStatus.js";
 import { destinationService } from "../services/DestinationService.js";
 
-const MESSAGE_DESTINATION_NOT_FOUND = (id) =>
-  `La destination avec l'ID ${id} n'a pas été trouvé.`;
-
 class DestinationController {
-  static async getAllDestination(_req, res) {
+  /**@private */
+  #destinationService
+  constructor() {
+    this.#destinationService = destinationService;
+  }
+  getAllDestination = async (_req, res) => {
     try {
-      const users = await destinationService.getAllDestination();
+      const users = await this.#destinationService.getAllDestination();
+      if(!users){ throw new HttpError(HttpStatus.INTERNAL_SERVER_ERROR) }
       res.status(HttpStatus.OK.code).json(users);
     } catch (err) {
-      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
-        message: err.message || HttpStatus.INTERNAL_SERVER_ERROR,
-      });
+      this.handleError(err,res);
     }
   }
 
-  static async getDestinationById(req, res) {
+  getDestinationById = async (req, res) => {
     const id = req.params.id;
 
     try {
-      const user = await destinationService.getDestinationById(id);
-      if (!user || user.length == 0) {
-        throw new HttpError(
-          HttpStatus.NOT_FOUND,
-          MESSAGE_DESTINATION_NOT_FOUND(id)
-        );
-      }
+      const user = await this.#destinationService.getDestinationById(id);
+      if(!user){ throw new HttpError(HttpStatus.INTERNAL_SERVER_ERROR) }
       res.status(HttpStatus.OK.code).json(user);
     } catch (err) {
-      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
-        message: err.message || "La destination n'a pas été trouvé.",
-      });
+      this.handleError(err,res);
     }
   }
 
-  static async createDestination(req, res) {
+  createDestination = async (req, res) => {
     const { nom, urlimage, description } = req.body;
 
     try {
-      const created = await destinationService.createDestination(nom, urlimage, description);
-      res
-        .status(HttpStatus.CREATED.code)
-        .json({ message: "La destination a été créé avec succès." });
+      const created = await this.#destinationService.createDestination(nom, urlimage, description);
+      if(!created){ throw new HttpError(HttpStatus.INTERNAL_SERVER_ERROR) }
+      res.status(HttpStatus.CREATED.code).json({ message: HttpStatus.CREATED.message });
     } catch (err) {
-      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
-        message: err.message || HttpStatus.INTERNAL_SERVER_ERROR,
-      });
+      this.handleError(err,res);
     }
   }
 
-  static async patchDestinationById(req, res) {
+  patchDestinationById = async (req, res) => {
     const id = req.params.id;
     const { nom, urlimage, description } = req.body;
-
     try {
-      const updated = await destinationService.patchDestinationById(
-        id,
-        nom,
-        urlimage,
-        description
-      );
-      if (!updated) {
-        throw new HttpError(
-          HttpStatus.NOT_FOUND,
-          MESSAGE_DESTINATION_NOT_FOUND(id)
-        );
-      }
-      res
-        .status(HttpStatus.OK.code)
-        .json({ message: "La destination a été mis à jour avec succès." });
+      const updated = await this.#destinationService.patchDestinationById(id, nom, urlimage, description);
+      if(!updated){ throw new HttpError(HttpStatus.INTERNAL_SERVER_ERROR) }
+      res.status(HttpStatus.OK.code).json({ message: HttpStatus.OK.message });
     } catch (err) {
-      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
-        message: err.message || HttpStatus.INTERNAL_SERVER_ERROR,
-      });
+      this.handleError(err,res);
     }
   }
 
-  static async getRandomDestination(_req, res) {
+  getRandomDestination = async (_req, res) => {
     try {
-      const users = await destinationService.getRandomDestination();
-      res.status(HttpStatus.OK.code).json(users);
+      const destination = await this.#destinationService.getRandomDestination();
+      if(!destination){ throw new HttpError(HttpStatus.INTERNAL_SERVER_ERROR) }
+      res.status(HttpStatus.OK.code).json(destination);
     } catch (err) {
-      res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code).json({
-        message: err.message || HttpStatus.INTERNAL_SERVER_ERROR,
-      });
+      this.handleError(err, res);
     }
   }
 
-  static handleError(err, _req, res, _next) {
+  /**@private */
+  handleError(err, res) {
     const statusCode = err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR.code;
     res.status(statusCode).json({ message: err.message || HttpStatus.INTERNAL_SERVER_ERROR });
   }
 }
 
-export { DestinationController };
+const destinationController = Object.freeze(new DestinationController());
+export { destinationController };
