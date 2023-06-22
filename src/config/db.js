@@ -22,16 +22,14 @@ class Database {
     };
 
     this.pool = pkg.createPool(config);
-    this.utilisateur = "Utilisateur";
-    this.destination = "Destination";
   }
 
   /**
    * Description
    * @author Angel Daniel PASTOR ROJAS
    * @date 2023-06-15
-   * @param {String} sql
-   * @param {any} params
+   * @param {String} sql une requête sql
+   * @param {any} params une liste de variables pour éxecuter la requête imbriqué "sql"
    * @returns {pkg.RowDataPacket[] | pkg.RowDataPacket[][] | pkg.OkPacket | pkg.OkPacket[] | pkg.ResultSetHeader}
    * @
    */
