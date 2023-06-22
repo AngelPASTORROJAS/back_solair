@@ -16,11 +16,9 @@ app.get('/', (_req, res) => {
   res.status(HttpStatus.OK.code).json({ message: HttpStatus.OK.message });
 });
 
-// Routes pour la gestion des utilisateurs
-app.use('/api', UtilisateurRouter);
-
-// Routes pour la gestion des destinations
-app.use('/api',DestinationRouter)
+// Routes pour la gestion des controllers
+app.use('/api/users', UtilisateurRouter);
+app.use('/api/destinations',DestinationRouter)
 
 // Gestion des erreurs
 app.use((err, _req, res, _next) => {

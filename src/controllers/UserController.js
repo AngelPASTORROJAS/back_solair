@@ -19,7 +19,6 @@ class UserController {
 
   getUserById = async (req, res) => {
     const userId = req.params.id;
-
     try {
       const user = await this.#userService.getUserById(userId);
       if (user?.length == 0) { throw new HttpError(HttpStatus.NOT_FOUND) }

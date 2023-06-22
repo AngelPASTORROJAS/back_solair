@@ -4,10 +4,11 @@ import apicache from "apicache";
 
 const DestinationRouter = Router();
 
-DestinationRouter.get("/destinations", apicache.middleware("5 minutes"), destinationController.getAllDestination);
-DestinationRouter.get("/destinations/random", destinationController.getRandomDestination);
-DestinationRouter.get("/destinations/:id([0-9]+)", apicache.middleware("5 minutes"), destinationController.getDestinationById);
-DestinationRouter.post("/destinations", destinationController.createDestination);
-DestinationRouter.patch("/destinations/:id([0-9]+)", destinationController.patchDestinationById);
+DestinationRouter
+    .get("", apicache.middleware("5 minutes"), destinationController.getAllDestination)
+    .get("/random", destinationController.getRandomDestination)
+    .get("/:id([0-9]+)", apicache.middleware("5 minutes"), destinationController.getDestinationById)
+    .post("", destinationController.createDestination)
+    .patch("/:id([0-9]+)", destinationController.patchDestinationById);
 
 export { DestinationRouter };
