@@ -2,21 +2,21 @@
  * Classe décrivant le schéma d'une entité
  */
 class EntitySchema {
-  /**@type {{tableName,columns:{ id: string, titre: string, description: string }}} */
+  /**@type {{tableName:string,columns:{ id: string, titre: string, description: string }}} */
   activite;
-  /**@type {{tableName,columns:{ id: string, destination_id: string, activite_id: string }}} */
+  /**@type {{tableName:string,columns:{ id: string, destination_id: string, activite_id: string }}} */
   activite_destination;
-  /**@type {{tableName,columns:{ id: string, nom: string }}} */
+  /**@type {{tableName:string,columns:{ id: string, nom: string }}} */
   critere;
-  /**@type {{tableName,columns:{ id: string, destination_id: string, critere_id: string }}} */
+  /**@type {{tableName:string,columns:{ id: string, destination_id: string, critere_id: string }}} */
   critere_destination;
-  /**@type {{tableName,columns:{id: string, nom: string, image_url: string, ville: string, description: string, score: string, budget: string}}} */
+  /**@type {{tableName:string,columns:{id: string, nom: string, image_url: string, ville: string, description: string, score: string, budget: string}}} */
   destination;
-  /**@type {{tableName,columns:{ id: string, destination_id: string, utilisateur_id: string }}} */
+  /**@type {{tableName:string,columns:{ id: string, destination_id: string, utilisateur_id: string }}} */
   destination_utilisateur;
-  /**@type {{tableName,columns:{ id: string, pseudo: string, password: string, mail: string}}} */
+  /**@type {{tableName:string,columns:{ id: string, pseudo: string, password: string, mail: string}}} */
   utilisateur;
-  /**@type {{tableName,columns:{ id: string, mail: string}}} */
+  /**@type {{tableName:string,columns:{ id: string, mail: string}}} */
   newsletter;
   constructor() {
     this.activite = this.defineEntity("Activite", { 
