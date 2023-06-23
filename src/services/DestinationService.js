@@ -5,37 +5,30 @@ class DestinationService {
   #db;
   #table;
   #columns;
+  #sql;
   constructor() {
     this.#db = db;
     this.#columns = entitySchema.destination.columns;
     this.#table = entitySchema.destination.tableName; 
+    this.#sql = {
+      SELECT_DESTINATIONS : `SELECT ${this.#columns.id}, ${this.#columns.nom}, ${this.#columns.image_url}, ${this.#columns.description} FROM ${this.#table}`,
+      SELECT_DESTINATION : `SELECT ${this.#columns.id}, ${this.#columns.nom}, ${this.#columns.image_url}, ${this.#columns.description} FROM ${this.#table} WHERE ${this.#columns.id} = ?`,
+      SELECT_DESTINATION_RANDOM: `SELECT ${this.#columns.id}, ${this.#columns.nom}, ${this.#columns.image_url}, ${this.#columns.description}, ${this.#columns.description} FROM ${this.#table} order by RAND() LIMIT 1`,
+      CREATE_DESTINATION: `INSERT INTO ${this.#table} (${this.#columns.nom}, ${this.#columns.image_url}, ${this.#columns.description}) VALUES (?, ?, ?)`
+    };
   }
 
   getAllDestination = async ( ) => {
-    const sql = `SELECT ${this.#columns.id}, 
-        ${this.#columns.nom}, 
-        ${this.#columns.image_url}, 
-        ${this.#columns.description} 
-      FROM ${this.#table}`;
-    return this.#db.query(sql);
+    return this.#db.query(this.#sql.SELECT_DESTINATIONS);
   }
 
   getDestinationById = async ( id) => {
-    const sql = `SELECT ${this.#columns.id}, 
-        ${this.#columns.nom}, 
-        ${this.#columns.image_url}, 
-        ${this.#columns.description} 
-      FROM ${this.#table} 
-      WHERE ${this.#columns.id} = ? LIMIT 1`;
-    return this.#db.query(sql, [id]);
+    return this.#db.query(this.#sql.SELECT_DESTINATION, [id]);
   }
 
   createDestination = async ( nom, urlimage, description) => {
-    const sql = `INSERT INTO ${this.#table} 
-        (${this.#columns.nom}, ${this.#columns.image_url}, ${this.#columns.description}) 
-      VALUES (?, ?, ?)`;
     const values = [nom, urlimage, description];
-    const result = this.#db.query(sql, values);
+    const result = this.#db.query(this.#sql.CREATE_DESTINATION, values);
     return result.affectedRows > 0;
   }
 
@@ -71,13 +64,7 @@ class DestinationService {
   }
 
   getRandomDestination = async ( ) => {
-    const sql = `SELECT ${this.#columns.id}, 
-        ${this.#columns.nom}, 
-        ${this.#columns.image_url}, 
-        ${this.#columns.description}, 
-        ${this.#columns.description} 
-      FROM ${this.#table} order by RAND() LIMIT 1`;
-    return this.#db.query(sql);
+    return this.#db.query(this.#sql.SELECT_DESTINATION_RANDOM);
   }
 }
 

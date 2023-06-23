@@ -6,44 +6,35 @@ class UserService {
   #db;
   #table;
   #columns;
+  #sql;
   constructor() {
     this.#db = db;
     this.#columns = entitySchema.utilisateur.columns;
     this.#table = entitySchema.utilisateur.tableName; 
+    this.#sql = {
+      SELECT_UTILISATEURS : `SELECT ${this.#columns.id}, ${this.#columns.pseudo} FROM ${this.#table}`,
+      SELECT_UTILISATEUR : `SELECT ${this.#columns.id}, ${this.#columns.pseudo}, ${this.#columns.mail} FROM ${this.#table} WHERE ${this.#columns.id} = ?`,
+      CREATE_UTILISATEUR: `INSERT INTO ${this.#table} (${this.#columns.pseudo}, ${this.#columns.mail}, ${this.#columns.password}) VALUES (?, ?, ?)`,
+      SELECT_UTILISATEUR_PASSWORD: `SELECT ${this.#columns.password} FROM ${this.#table} WHERE ${this.#columns.mail} = ? LIMIT 1`
+    };
   }
 
   getAllUsers = async () => {
-    const sql = `SELECT ${this.#columns.id}, 
-        ${this.#columns.pseudo},
-        ${this.#columns.mail} 
-      FROM ${this.#table}`;
-    return this.#db.query(sql);
+    return this.#db.query(this.#sql.SELECT_UTILISATEURS);
   };
 
   getUserById = async (id) => {
-    const sql = `SELECT ${this.#columns.id}, 
-        ${this.#columns.pseudo}, 
-        ${this.#columns.mail} 
-      FROM ${this.#table} 
-      WHERE ${this.#columns.id} = ?`;
-    return this.#db.query(sql, [id]);
+    return this.#db.query(this.#sql.SELECT_UTILISATEUR, [id]);
   };
 
   createUser = async (pseudo, mail, motdepasse) => {
-    const sql = `INSERT INTO ${this.#table} 
-      (${this.#columns.pseudo}, ${this.#columns.mail}, ${this.#columns.mail}) 
-    VALUES 
-      (?, ?, ?)`;
     const values = [pseudo, mail, await encryptPassword(motdepasse)];
-    const result = this.#db.query(sql, values);
+    const result = this.#db.query(this.#sql.CREATE_UTILISATEUR, values);
     return result.affectedRows > 0;
   };
 
   authenticateUser = async (mail, motdepasse) => {
-    const sql = `SELECT ${this.#columns.password} 
-      FROM ${this.#table}
-      WHERE ${this.#columns.mail} = ? LIMIT 1`;
-    const rows = this.#db.query(sql, [mail]);
+    const rows = this.#db.query(this.#sql.SELECT_UTILISATEUR_PASSWORD, [mail]);
     return (
       rows.length > 0 &&
       (await checkPasswordMatch(motdepasse, rows[0].motdepasse))
