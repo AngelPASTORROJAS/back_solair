@@ -17,7 +17,7 @@ app.get("/", (_req, res) => {
 });
 
 // Routes pour la gestion des controllers
-app.use("/api/users", UtilisateurRouter);
+app.use("/api/utilisateurs", UtilisateurRouter);
 app.use("/api/destinations",DestinationRouter);
 
 // Gestion des erreurs
