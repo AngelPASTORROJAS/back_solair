@@ -21,7 +21,7 @@ app.use("/api/users", UtilisateurRouter);
 app.use("/api/destinations",DestinationRouter);
 
 // Gestion des erreurs
-app.use((err, _req, res) => {
+app.use((res, _req, next, err) => {
   console.error(err.stack);
   res.status(HttpStatus.INTERNAL_SERVER_ERROR.code).json({ message: HttpStatus.INTERNAL_SERVER_ERROR.message });
 });
