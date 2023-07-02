@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { DestinationCritere } from "../models/DestinationCritere.js";
-import { Critere } from "../models/Critere.js";
+import { DestinationCritere } from "../../models/DestinationCritere.js";
+import { Critere } from "../../models/Critere.js";
     
 describe("Critere", () => {
   describe("constructor", () => {

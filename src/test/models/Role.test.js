@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { UtilisateurRole } from "../models/UtilisateurRole.js";
-import { Role } from "../models/Role.js";
+import { UtilisateurRole } from "../../models/UtilisateurRole.js";
+import { Role } from "../../models/Role.js";
 
 describe("Role", () => {
   describe("constructor", () => {

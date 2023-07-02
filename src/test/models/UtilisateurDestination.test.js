@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { Utilisateur } from "../models/Utilisateur.js";
-import { UtilisateurDestination } from "../models/UtilisateurDestination.js";
-import { Destination } from "../models/Destination.js";
+import { Utilisateur } from "../../models/Utilisateur.js";
+import { UtilisateurDestination } from "../../models/UtilisateurDestination.js";
+import { Destination } from "../../models/Destination.js";
 
 describe("UtilisateurDestination", () => {
   describe("constructor", () => {
