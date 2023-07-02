@@ -97,12 +97,12 @@ class Utilisateur {
       if (typeof email !== "string" && typeof email !== "undefined") {
         throw new TypeError("email must be a string");
       }
-      if (email !== undefined && max_lenght_email < email.length) {
+      if (max_lenght_email < email.length) {
         throw Error(
           `email must not exceed a maximum length ${max_lenght_email}`
         );
       }
-      if (emailRegex.test(email)) {
+      if (!emailRegex.test(email)) {
         throw new Error("email must be valid");
       }
       this.email = email;
