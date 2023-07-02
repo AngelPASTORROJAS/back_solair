@@ -54,11 +54,19 @@ describe("Utilisateur", () => {
       );
     });
 
+    it("should throw a type error with a non-string login", () => {
+      expect(() => new Utilisateur({ login: 123 })).toThrow(TypeError);
+    });
+
     it("should throw an error if mot_de_passe exceeds maximum length", () => {
       const mot_de_passe = "a".repeat(61);
       expect(() => new Utilisateur({ mot_de_passe })).toThrowError(
         "mot_de_passe must not exceed a maximum length 60"
       );
+    });
+
+    it("should throw a type error with a non-string mot_de_passe", () => {
+      expect(() => new Utilisateur({ mot_de_passe: 123 })).toThrow(TypeError);
     });
 
     it("should throw an error if email exceeds maximum length", () => {
@@ -73,6 +81,10 @@ describe("Utilisateur", () => {
       expect(() => new Utilisateur({ email })).toThrowError(
         "email must be valid"
       );
+    });
+
+    it("should throw a type error with a non-string email", () => {
+      expect(() => new Utilisateur({ email: 123 })).toThrow(TypeError);
     });
 
     it("should throw an error if utilisateur_role is not a UtilisateurRole", () => {
