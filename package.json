@@ -4,20 +4,25 @@
   "description": "api-solair",
   "main": "index.js",
   "type": "module",
+  "private": true,
+  "license": "ISC",
+  "homepage": "https://github.com/AngelPASTORROJAS/back_solair#readme",
   "scripts": {
+    "lint": "./node_modules/.bin/eslint .",
+    "lint:fix": "./node_modules/.bin/eslint . --fix",
     "start": "node src/index.js",
-    "dev": "node --watch src/index.js",
-    "start:dev": "NODE_ENV=developpement node --watch src/index.js",
     "start:prod": "NODE_ENV=production node src/index.js",
-    "dev2": "nodemon src/index.js"
+    "start:dev": "NODE_ENV=developpement node --watch src/index.js",
+    "dev": "node --watch src/index.js",
+    "dev:prod": "NODE_ENV=production node src/index.js",
+    "dev:dev": "NODE_ENV=developpement node --watch src/index.js",
+    "test": "npx jest Utilisateur.test.js"
   },
   "author": {
     "name": "Angel Daniel PASTOR ROJAS",
     "email": "angeldaniel.pastorrojas.etu@gmail.com",
     "url": "https://www.linkedin.com/in/angel-daniel-pastor-rojas/"
   },
-  "private":true,
-  "license": "ISC",
   "dependencies": {
     "apicache": "^1.6.3",
     "bcrypt": "^5.1.0",
@@ -28,10 +33,6 @@
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.3.3"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.22"
-  },
-  "homepage": "https://github.com/AngelPASTORROJAS/back_solair#readme",
   "bugs": {
     "url": "https://github.com/AngelPASTORROJAS/back_solair/issues",
     "email": "angeldaniel.pastorrojas.etu@gmail.com"
@@ -43,5 +44,8 @@
   },
   "os": [
     "darwin"
-  ]
+  ],
+  "devDependencies": {
+    "eslint": "^8.44.0"
+  }
 }
