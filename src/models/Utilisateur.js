@@ -75,7 +75,7 @@ class Utilisateur {
       }
       if (max_length_login < login.length) {
         throw Error(
-          `login must must not exceed a maximum length ${max_length_login}`
+          `login must not exceed a maximum length ${max_length_login}`
         );
       }
       this.login = login;
