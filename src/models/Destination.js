@@ -1,4 +1,5 @@
 import { UtilisateurDestination } from "./UtilisateurDestination.js";
+import { DestinationCritere } from "./DestinationCritere.js";
 
 /**
  * Destination représente le modèle objet destination.
@@ -48,6 +49,12 @@ class Destination {
   utilisateur_destination;
 
   /**
+   * utilisateur_desination Destination
+   * @type {DestinationCritere | undefined}
+   */
+  destination_critere;
+
+  /**
    * @constructor
    * Initialise une nouvelle destination avec les options spécifiées.
    * @param {Object} [options={}] - Les options pour initialiser Destination.
@@ -58,8 +65,9 @@ class Destination {
    * @param {string} [options.titre] - Le titre Destination
    * @param {string} [options.article] - L'article Destination
    * @param {UtilisateurDestination} [options.utilisateur_destination] - UtilisateurDestination Destination
+   * @param {DestinationCritere} [options.destination_critere] - DestinationCritere Destination
    */
-  constructor({ id, nom, url_image, description, titre, article, utilisateur_destination } = {}) {
+  constructor({ id, nom, url_image, description, titre, article, utilisateur_destination, destination_critere } = {}) {
     const max_length_nom = 70;
     const max_length_url_image = 2048;
     const max_length_description = 125;
@@ -141,6 +149,13 @@ class Destination {
         throw new TypeError("utilisateur_destination must be a UtilisateurDestination");
       }
       this.utilisateur_destination = utilisateur_destination;
+    }
+
+    if (destination_critere !== undefined) {
+      if (typeof destination_critere !== typeof new DestinationCritere()) {
+        throw new TypeError("destination_critere must be a UtilisateurDestination");
+      }
+      this.destination_critere = destination_critere;
     }
   }
 }
