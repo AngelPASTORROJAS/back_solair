@@ -43,8 +43,8 @@ class UtilisateurRole {
    * @param {number} [options.id] - L'identifiant unique du UtilisateurRole.
    * @param {string} [options.utilisateur_id] - Le utilisateur_id du UtilisateurRole.
    * @param {string} [options.role_id] - La role_id du UtilisateurRole.
-   * @param {Object} [options.utilisateur] - Utilisateur du UtilisateurRole.
-   * @param {Object} [options.role] - Role du UtilisateurRole.
+   * @param {Utilisateur} [options.utilisateur] - Utilisateur du UtilisateurRole.
+   * @param {Role} [options.role] - Role du UtilisateurRole.
    */
   constructor({ id, utilisateur_id, role_id, utilisateur, role } = {}) {
     if (id !== undefined) {

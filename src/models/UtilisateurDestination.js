@@ -43,8 +43,8 @@ class UtilisateurDestination {
    * @param {number} [options.id] - L'identifiant unique du UtilisateurDestination.
    * @param {string} [options.utilisateur_id] - utilisateur_id du UtilisateurDestination.
    * @param {string} [options.destination_id] - destination_id du UtilisateurDestination.
-   * @param {Object} [options.utilisateur] - Utilisateur du UtilisateurDestination.
-   * @param {Object} [options.destination] - Destination du UtilisateurDestination.
+   * @param {Utilisateur} [options.utilisateur] - Utilisateur du UtilisateurDestination.
+   * @param {Destination} [options.destination] - Destination du UtilisateurDestination.
    */
   constructor({ id, utilisateur_id, destination_id, utilisateur, destination } = {}) {
     if (id !== undefined) {
