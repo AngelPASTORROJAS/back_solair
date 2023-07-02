@@ -16,7 +16,6 @@
     "dev": "node --watch src/index.js",
     "dev:prod": "NODE_ENV=production node src/index.js",
     "dev:dev": "NODE_ENV=developpement node --watch src/index.js",
-    "test": "npx jest Utilisateur.test.js"
   },
   "author": {
     "name": "Angel Daniel PASTOR ROJAS",
