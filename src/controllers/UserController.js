@@ -1,4 +1,5 @@
 import { HttpError, HttpStatus } from "../http/httpStatus.js";
+import { Utilisateur } from "../models/Utilisateur.js";
 import { utilisateurService } from "../services/UserService.js";
 
 class UserController {
@@ -29,11 +30,20 @@ class UserController {
   };
 
   createUser = async (req, res) => {
-    const { psuedo, mail, motdepasse } = req.body;
+    const { login, email, mot_de_passe } = req.body;
     try {
-      const created = await this.#userService.createUser(psuedo, mail, motdepasse);
-      if(!created){ throw new HttpError(HttpStatus.INTERNAL_SERVER_ERROR); }
-      res.status(HttpStatus.CREATED.code).json({ message: HttpStatus.CREATED.message });
+      const utilisateur = new Utilisateur({
+        login: login,
+        email: email,
+        mot_de_passe: mot_de_passe,
+      });
+      const created = await this.#userService.createUser(utilisateur);
+      if (!created) {
+        throw new HttpError(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      res
+        .status(HttpStatus.CREATED.code)
+        .json({ message: HttpStatus.CREATED.message });
     } catch (err) {
       this.handleError(err, res);
     }

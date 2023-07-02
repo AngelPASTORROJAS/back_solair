@@ -1,9 +1,9 @@
 import { HttpStatus } from "../http/httpStatus.js";
 
 const ValidateUserInput = (req, res, next) => {
-  const { pseudo, mail, motdepasse } = req.body;
+  const { login, email, mot_de_passe } = req.body;
 
-  if (!pseudo || !mail || !motdepasse) {
+  if (!login || !email || !mot_de_passe) {
     const errorMessage = "Le nom d'utilisateur, l'e-mail et le mot de passe sont requis.";
     return res.status(HttpStatus.BAD_REQUEST.code).json({ message: errorMessage });
   }
@@ -11,9 +11,9 @@ const ValidateUserInput = (req, res, next) => {
 };
 
 const ValidateAuthInput = (req, res, next) => {
-  const { mail, motdepasse } = req.body;
+  const { email, mot_de_passe } = req.body;
 
-  if ( !mail || !motdepasse) {
+  if ( !email || !mot_de_passe) {
     const errorMessage = "Le e-mail et le mot de passe sont requis.";
     return res.status(HttpStatus.BAD_REQUEST.code).json({ message: errorMessage });
   }

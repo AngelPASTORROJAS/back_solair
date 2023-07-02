@@ -1,5 +1,6 @@
 import { db } from "../config/db.js";
 import { encryptPassword,checkPasswordMatch } from "../utils/password.js";
+import {Utilisateur} from "../models/Utilisateur.js";
 
 class UserService {
   #db;
@@ -23,8 +24,23 @@ class UserService {
     return this.#db.query(this.#sql.SELECT_UTILISATEUR, [id]);
   };
 
-  createUser = async (pseudo, mail, motdepasse) => {
-    const values = [pseudo, mail, await encryptPassword(motdepasse)];
+  
+  /**
+   * The `createUser` function is a method of the `UserService` class.
+   * It is used to create a new user in the database.
+   * @author Angel Daniel PASTOR ROJAS
+   * @date 2023-07-03
+   * @param {Utilisateur} utilisateur
+   * @returns {boolean} Return true if utilisateur are created otherwise false
+   */
+  createUser = async (utilisateur) => {
+    if(typeof utilisateur !== typeof new Utilisateur()){
+      throw new TypeError("Invalid type to createUser");
+    }
+    if(!utilisateur.email || !utilisateur.login || !utilisateur.mot_de_passe){
+      throw new Error("Invalid proprieties to createUser");
+    }
+    const values = [utilisateur.login, utilisateur.email, await encryptPassword(utilisateur.mot_de_passe)];
     const result = this.#db.query(this.#sql.CREATE_UTILISATEUR, values);
     return result.affectedRows > 0;
   };
