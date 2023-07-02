@@ -37,15 +37,19 @@ class Database {
    * @param {any} params une liste de variables pour éxecuter la requête imbriqué "sql"
    * @returns {pkg.RowDataPacket[] | pkg.RowDataPacket[][] | pkg.OkPacket | pkg.OkPacket[] | pkg.ResultSetHeader} */
   query = async (sql, values) => {
-    const poolConnection = await this.pool.getConnection();
     try {
-      const [rows] = await poolConnection.query(sql, values);
-      return rows;
+      const poolConnection = await this.pool.getConnection();
+      try {
+        const [rows] = await poolConnection.query(sql, values);
+        return rows;
+      } catch (error) {
+        console.error(error);
+        throw new DatabaseError("Erreur lors de l'exécution de la requête");
+      } finally {
+        poolConnection.release();
+      }
     } catch (error) {
       console.error(error);
-      throw new DatabaseError("Erreur lors de l'exécution de la requête");
-    } finally {
-      poolConnection.release();
     }
   };
 }
