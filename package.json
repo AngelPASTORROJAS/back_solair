@@ -16,6 +16,8 @@
     "dev": "node --watch src/index.js",
     "dev:prod": "NODE_ENV=production node src/index.js",
     "dev:dev": "NODE_ENV=developpement node --watch src/index.js",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "author": {
     "name": "Angel Daniel PASTOR ROJAS",
@@ -45,6 +47,7 @@
     "darwin"
   ],
   "devDependencies": {
+    "@vitest/coverage-v8": "^0.32.2",
     "eslint": "^8.44.0"
   }
 }
