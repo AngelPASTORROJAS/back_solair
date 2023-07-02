@@ -43,8 +43,8 @@ class DestinationCritere {
    * @param {number} [options.id] - L'identifiant unique du DestinationCritere.
    * @param {string} [options.critere_id] - critere_id du DestinationCritere.
    * @param {string} [options.destination_id] - destination_id du DestinationCritere.
-   * @param {Object} [options.critere] - Critere du DestinationCritere.
-   * @param {Object} [options.destination] - Destination du DestinationCritere.
+   * @param {Critere} [options.critere] - Critere du DestinationCritere.
+   * @param {Destination} [options.destination] - Destination du DestinationCritere.
    */
   constructor({ id, critere_id, destination_id, critere, destination } = {}) {
     if (id !== undefined) {
