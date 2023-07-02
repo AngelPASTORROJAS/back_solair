@@ -51,7 +51,7 @@ class Utilisateur {
    * @param {string} [options.mot_de_passe] - Le mot de passe Utilisateur.
    * @param {string} [options.email] - L'adresse e-mail Utilisateur.
    * @param {UtilisateurRole} [options.utilisateur_role] - UtilisateurRole Utilisateur.
-   * @param {UtilisateurRole} [options.utilisateur_destination] - UtilisateurDestination Utilisateur.
+   * @param {UtilisateurDestination} [options.utilisateur_destination] - UtilisateurDestination Utilisateur.
    */
   constructor({ id, login, mot_de_passe, email, utilisateur_role, utilisateur_destination } = {}) {
     const max_length_login = 50;
