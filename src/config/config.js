@@ -24,6 +24,7 @@ const DB_PASSWORD = process.env.DB_PASSWORD || "exemplePassword";
 const DB_DATABASE = process.env.DB_DATABASE || "exempleDatabase";
 const DB_PORT = Number(process.env.DB_PORT) || 3454;
 
+const SECRET_KEY = process.env.SECRET_KEY || "exemple-key" ;
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h";
 const PORT = Number(process.env.PORT) || 3000;
 
@@ -34,6 +35,7 @@ export {
   DB_PASSWORD,
   DB_DATABASE,
   DB_PORT,
+  SECRET_KEY,
   JWT_EXPIRATION,
   PORT
 };
