@@ -39,10 +39,11 @@ class UserController {
         mot_de_passe: mot_de_passe,
       });
       const created = await this.#userService.createUser(utilisateur);
-      if (!created) {
+      const payload = await this.#userService.getUserData(utilisateur);
+      if (!payload && !created) { 
         res.status(HttpStatus.INTERNAL_SERVER_ERROR.code).json({ message: "l'utilisateur n'as pas pu être créer" });
       }else{
-        res.status(HttpStatus.CREATED.code).json({ message: HttpStatus.CREATED.message });
+        res.status(HttpStatus.CREATED.code).json({ token: getToken(payload) });
       }
     } catch (err) {
       this.handleError(err, res);
