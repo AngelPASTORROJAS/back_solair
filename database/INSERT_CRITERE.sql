@@ -37,9 +37,6 @@ INSERT INTO critere(nom, description) VALUES
 ('Famille', 'Filtre de destination'),
 ('Groupe', 'Filtre de destination');
 
-INSERT INTO utilisateur(login, mot_de_passe, email) VALUES ('Test_Admin', 'A password', 'mail@example.com')
-INSERT INTO role(nom, description) VALUES ('admin', 'Administrateur du site')
-INSERT INTO utilisateur_role(utilisateur_id, role_id) VALUES (1,1)
 
 INSERT INTO destination (nom, url_image, description, titre, article) VALUES
 ('Paris', 'https://example.com/paris.jpg', 'Vue de la tour Eiffel à Paris', 'Découvrez la ville de l\'amour', 'Paris, la ville de l\'amour, de la gastronomie et de l\'art, est une destination de choix pour les voyageurs du monde entier. Venez découvrir ses charmantes rues pavées, ses musées de renommée mondiale, et bien sûr, sa célèbre tour Eiffel.'),
@@ -49,3 +46,30 @@ INSERT INTO destination (nom, url_image, description, titre, article) VALUES
 ('Nice', 'https://example.com/nice.jpg', 'Vue de la Promenade des Anglais à Nice', 'Découvrez la ville ensoleillée', 'Nice, la ville ensoleillée, est une destination de choix pour les amateurs de plage, de soleil et de culture. Découvrez sa célèbre Promenade des Anglais, visitez ses musées et galeries d\'art, et goûtez à sa délicieuse cuisine méditerranéenne.'),
 ('Strasbourg', 'https://example.com/strasbourg.jpg', 'Vue de la cathédrale de Strasbourg', 'Découvrez la ville européenne', 'Strasbourg, la ville européenne, est une destination de choix pour les amateurs de culture et d\'histoire. Visitez sa célèbre cathédrale, promenez-vous dans son charmant quartier de la Petite France, et goûtez à sa délicieuse cuisine alsacienne.'),
 ('Annecy', 'https://example.com/annecy.jpg', 'Vue du lac d\'Annecy', 'Découvrez la ville lacustre', 'Annecy, la ville lacustre, est une destination de choix pour les amoureux de la nature et de la montagne. Découvrez son célèbre lac, visitez son château médiéval, et promenez-vous dans sa charmante vieille ville.');
+
+
+INSERT INTO utilisateur (login, mot_de_passe, email) VALUES 
+('john_doe', 'password123', 'john.doe@example.com'),
+('jane_doe', 'password456', 'jane.doe@example.com'),
+('bob_smith', 'password789', 'bob.smith@example.com'),
+('alice_jones', 'passwordabc', 'alice.jones@example.com'),
+('sam_smith', 'passworddef', 'sam.smith@example.com'),
+('jimmy', 'password123', 'jimmy@example.com'),
+('jessica', 'password456', 'jessica@example.com'),
+('david', 'password789', 'david@example.com'),
+('samantha', 'passwordabc', 'samantha@example.com'),
+('peter', 'passworddef', 'peter@example.com');
+
+INSERT INTO role (nom, description) VALUES 
+('admin', "Rôle d'administrateur avec tous les privilèges."),
+('éditeur', "Rôle d'éditeur avec des privilèges limités."),
+('utilisateur', "Rôle d'utilisateur standard sans privilèges particuliers."),
+('invité', "Rôle d'invité avec un accès limité."),
+('modérateur', 'Rôle de modérateur avec des privilèges de modération.');
+
+INSERT INTO utilisateur_role (role_id, utilisateur_id) VALUES 
+(1, 1),
+(2, 1),
+(3, 2),
+(3, 3),
+(4, 4);
