@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { HttpStatus } from "../../http/httpStatus";
-import { SECRET_KEY } from "../../config/config";
+import { HttpStatus } from "../../http/httpStatus.js";
+import { SECRET_KEY } from "../../config/config.js";
 
 const checkJwt = (req, res, next) => {
   const token = req.headers["authorization"];
