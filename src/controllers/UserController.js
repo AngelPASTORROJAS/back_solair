@@ -39,11 +39,14 @@ class UserController {
       });
       const created = await this.#userService.createUser(utilisateur);
       if (!created) {
-        throw new HttpError(HttpStatus.INTERNAL_SERVER_ERROR);
+        res
+          .status(HttpStatus.INTERNAL_SERVER_ERROR.code)
+          .json({ message: "l'utilisateur n'as pas pu être créer" });
+      }else{
+        res
+          .status(HttpStatus.CREATED.code)
+          .json({ message: HttpStatus.CREATED.message });
       }
-      res
-        .status(HttpStatus.CREATED.code)
-        .json({ message: HttpStatus.CREATED.message });
     } catch (err) {
       this.handleError(err, res);
     }

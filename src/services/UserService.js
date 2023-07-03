@@ -41,8 +41,8 @@ class UserService {
       throw new Error("Invalid proprieties to createUser");
     }
     const values = [utilisateur.login, utilisateur.email, await encryptPassword(utilisateur.mot_de_passe)];
-    const result = this.#db.query(this.#sql.CREATE_UTILISATEUR, values);
-    return result.affectedRows > 0;
+    const result = await this.#db.query(this.#sql.CREATE_UTILISATEUR, values);
+    return result !== undefined;
   };
 
   authenticateUser = async (mail, motdepasse) => {
