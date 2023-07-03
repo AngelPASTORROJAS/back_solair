@@ -9,7 +9,7 @@ const UtilisateurRouter = Router();
 UtilisateurRouter
   .get("", checkJwt, apicache.middleware("5 minutes"), utilisateurController.getAllUsers)
   .get("/:id([0-9]+)", checkJwt,apicache.middleware("5 minutes"), utilisateurController.getUserById)
-  .post("", checkJwt, ValidateUserInput, utilisateurController.createUser)
+  .post("", ValidateUserInput, utilisateurController.createUser)
   .post("/authenticate", ValidateAuthInput, utilisateurController.authenticateUser)
   //.patch("/:id([0-9]+)", checkJwt, utilisateurController.patchUserById)
 ;
