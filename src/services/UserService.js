@@ -12,7 +12,7 @@ class UserService {
       SELECT_UTILISATEUR : "SELECT id, login, email FROM utilisateur WHERE id = ?",
       CREATE_UTILISATEUR: "INSERT INTO utilisateur (login, email, mot_de_passe) VALUES (?, ?, ?)",
       UPDATE_UTILISATEUR: "UPDATE utilisateur SET first_name = ?, last_name = ?, email = ?, address = ?, diagnos",
-      SELECT_UTILISATEUR_PASSWORD: "SELECT mot_de_passe FROM utilisateur WHERE email = ? LIMIT 1"
+      SELECT_UTILISATEUR_PASSWORD: "SELECT mot_de_passe FROM utilisateur WHERE login = ?"
     };
   }
 
@@ -60,14 +60,29 @@ class UserService {
     return result !== undefined;
   };
 
-  authenticateUser = async (mail, motdepasse) => {
-    const rows = this.#db.query(this.#sql.SELECT_UTILISATEUR_PASSWORD, [mail]);
-    return (
-      rows.length > 0 &&
-      (await checkPasswordMatch(motdepasse, rows[0].motdepasse))
-    );
+  /**
+   * Description
+   * @author Angel Daniel PASTOR ROJAS
+   * @date 2023-07-03
+   * @param {Utilisateur} utilisateur
+   * @returns {Promise<boolean>}
+   */
+  authenticateUser = async (utilisateur) => {
+    if(typeof utilisateur !== typeof new Utilisateur()){
+      throw new TypeError("Invalid type to authenticateUser");
+    }
+    if(!utilisateur.login || !utilisateur.mot_de_passe){
+      throw new Error("Invalid proprieties to authenticateUser");
+    }
+    const rows = await this.#db.query(this.#sql.SELECT_UTILISATEUR_PASSWORD, [utilisateur.login]);
+    if(rows !== undefined){
+      return await checkPasswordMatch(utilisateur.mot_de_passe, rows[0].mot_de_passe);
+    } else{
+      return false;
+    }
   };
 
+  /*
   patchUserById = async (id, pseudo, mail, motdepasse) => {
     const values = [];
     const clause = [];
@@ -91,7 +106,7 @@ class UserService {
     const sql = `UPDATE utilisateur SET ${setClause}  WHERE id = ?`;
     const result = this.#db.query(sql, values);
     return result.affectedRows > 0;
-  };
+  };*/
 }
 
 const utilisateurService = Object.freeze(new UserService());

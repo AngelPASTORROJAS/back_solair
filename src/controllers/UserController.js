@@ -39,13 +39,9 @@ class UserController {
       });
       const created = await this.#userService.createUser(utilisateur);
       if (!created) {
-        res
-          .status(HttpStatus.INTERNAL_SERVER_ERROR.code)
-          .json({ message: "l'utilisateur n'as pas pu être créer" });
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR.code).json({ message: "l'utilisateur n'as pas pu être créer" });
       }else{
-        res
-          .status(HttpStatus.CREATED.code)
-          .json({ message: HttpStatus.CREATED.message });
+        res.status(HttpStatus.CREATED.code).json({ message: HttpStatus.CREATED.message });
       }
     } catch (err) {
       this.handleError(err, res);
@@ -53,16 +49,21 @@ class UserController {
   };
 
   authenticateUser = async (req, res) => {
-    const { mail, motdepasse } = req.body;
+    const { login, mot_de_passe } = req.body;
     try {
-      const authenticated = await this.#userService.authenticateUser(mail, motdepasse);
-      if (!authenticated) { throw new HttpError(HttpStatus.UNAUTHORIZED); }
-      res.status(HttpStatus.NO_CONTENT.code).json({ message: "L'utilisateur est authentifié." });
+      const utilisateur = new Utilisateur({login:login, mot_de_passe:mot_de_passe});
+      const authenticated = await this.#userService.authenticateUser(utilisateur);
+      if (!authenticated) { 
+        res.status(HttpStatus.UNAUTHORIZED.code).json({message: HttpStatus.UNAUTHORIZED.message}); 
+      } else {
+        res.status(HttpStatus.NO_CONTENT.code).json({ message: "L'utilisateur est authentifié." });
+      }
     } catch (err) {
       this.handleError(err, res);
     }
   };
 
+  /*
   patchUserById = async (req, res) => {
     const userId = req.params.id;
     const { pseudo, mail, motdepasse } = req.body;
@@ -74,7 +75,7 @@ class UserController {
     } catch (err) {
       this.handleError(err, res);
     }
-  };
+  };*/
 
   /**@private */
   handleError = (err, res) => {

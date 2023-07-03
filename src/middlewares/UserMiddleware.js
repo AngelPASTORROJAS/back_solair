@@ -11,10 +11,10 @@ const ValidateUserInput = (req, res, next) => {
 };
 
 const ValidateAuthInput = (req, res, next) => {
-  const { email, mot_de_passe } = req.body;
+  const { login, mot_de_passe } = req.body;
 
-  if ( !email || !mot_de_passe) {
-    const errorMessage = "Le e-mail et le mot de passe sont requis.";
+  if ( !login || !mot_de_passe) {
+    const errorMessage = "Le nom d'utilisateur et le mot de passe sont requis.";
     return res.status(HttpStatus.BAD_REQUEST.code).json({ message: errorMessage });
   }
   next();
