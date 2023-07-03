@@ -16,12 +16,27 @@ class UserService {
     };
   }
 
+  /**
+   * The `getAllUsers` function is an asynchronous arrow function that is a method of the `UserService` class. 
+   * It is used to retrieve all users from the database.
+   * @author Angel Daniel PASTOR ROJAS
+   * @date 2023-07-03
+   * @returns {Utilisateur[]}
+   */
   getAllUsers = async () => {
-    return this.#db.query(this.#sql.SELECT_UTILISATEURS);
+    return await this.#db.query(this.#sql.SELECT_UTILISATEURS);
   };
 
+  /**
+   * The `getUserById` function is an asynchronous arrow function that is a method of the `UserService` class. 
+   * It is used to retrieve a user from the database based on their `id`. 
+   * @author Angel Daniel PASTOR ROJAS
+   * @date 2023-07-03
+   * @param {number} id
+   * @returns {Utilisateur}
+   */
   getUserById = async (id) => {
-    return this.#db.query(this.#sql.SELECT_UTILISATEUR, [id]);
+    return await this.#db.query(this.#sql.SELECT_UTILISATEUR, [id]);
   };
 
   
