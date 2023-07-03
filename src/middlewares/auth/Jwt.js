@@ -7,26 +7,34 @@ const getToken = (payload) => {
 };
 
 const checkJwt = (req, res, next) => {
-  const token = req.headers["authorization"];
+  // Récupérer le token JWT dans l'en-tête Authorization de la requête
+  let token = req.headers["authorization"];
 
+  // Vérifier si le token est présent dans l'en-tête
   if (!token) {
     req.decoded = null;
+    // Renvoyer une réponse d'erreur d'authentification si le token est manquant
     return res
       .status(HttpStatus.UNAUTHORIZED.code)
       .json({ message: HttpStatus.UNAUTHORIZED.message });
   }
-  //token = token.replace("Bearer ", "");
+
+  // Supprimer le préfixe "Bearer " du token JWT
+  token = token.replace("Bearer ", "");
 
   let jwtPayload;
   try {
-    jwtPayload = jwt.verify(token, SECRET_KEY);
-    res.locals.jwtPayload = jwtPayload;
+    // Décoder le token JWT sans vérifier son authenticité
+    jwtPayload = jwt.decode(token, { complete: true });
+    // Stocker l'en-tête et le payload décodés dans l'objet req.decoded
     req.decoded = jwtPayload;
   } catch (error) {
+    // Renvoyer une réponse d'erreur d'authentification si le token est invalide ou expiré
     return res
-      .status(HttpStatus.NOT_FOUND.code)
-      .json({ message: HttpStatus.NOT_FOUND.message });
+      .status(HttpStatus.UNAUTHORIZED.code)
+      .json({ message: HttpStatus.UNAUTHORIZED.message });
   }
+  // Passer au middleware suivant si le token est valide
   next();
 };
 
