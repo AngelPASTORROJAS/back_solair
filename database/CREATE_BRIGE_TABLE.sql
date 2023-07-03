@@ -1,23 +1,35 @@
-CREATE TABLE CritereDestination (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    critereId INT UNSIGNED NOT NULL,
-    destinationId INT UNSIGNED NOT NULL,
-    FOREIGN KEY (critereId) REFERENCES Critere(id),
-    FOREIGN KEY (destinationId) REFERENCES Destination(id)
+CREATE TABLE utilisateur_destination (
+    id INT AUTO_INCREMENT NOT NULL,
+    destination_id INT NOT NULL,
+    utilisateur_id INT NOT NULL,
+    cree_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modifie_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE (destination_id, utilisateur_id),
+    FOREIGN KEY (destination_id) REFERENCES destination(id),
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(id)
 );
 
-CREATE TABLE DestinationUtilisateur (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    destinationId INT UNSIGNED NOT NULL,
-    utilisateurId INT UNSIGNED NOT NULL,
-    FOREIGN KEY (destinationId) REFERENCES Destination(id),
-    FOREIGN KEY (utilisateurId) REFERENCES Utilisateur(id)
+CREATE TABLE destination_critere (
+    id INT AUTO_INCREMENT NOT NULL,
+    destination_id INT NOT NULL,
+    critere_id INT NOT NULL,
+    cree_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modifie_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE (destination_id, critere_id),
+    FOREIGN KEY (critere_id) REFERENCES critere(id),
+    FOREIGN KEY (destination_id) REFERENCES destination(id)
 );
 
-CREATE TABLE ActiviteDestination (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    activiteId INT UNSIGNED NOT NULL,
-    destinationId INT UNSIGNED NOT NULL,
-    FOREIGN KEY (activiteId) REFERENCES Activite(id),
-    FOREIGN KEY (destinationId) REFERENCES Destination(id)
+CREATE TABLE utilisateur_role (
+    id INT AUTO_INCREMENT NOT NULL,
+    role_id INT NOT NULL,
+    utilisateur_id INT NOT NULL,
+    cree_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modifie_le DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE (role_id, utilisateur_id),
+    FOREIGN KEY (role_id) REFERENCES role(id),
+    FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(id)
 );
