@@ -23,7 +23,7 @@ class UserController {
     try {
       const user = await this.#userService.getUserById(userId);
       if (user?.length == 0) { throw new HttpError(HttpStatus.NOT_FOUND); }
-      res.status(HttpStatus.OK.code).json(user);
+      res.status(HttpStatus.OK.code).json(user[0]);
     } catch (err) {
       this.handleError(err, res);
     }
