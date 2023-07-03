@@ -1,4 +1,5 @@
 import { HttpError, HttpStatus } from "../http/httpStatus.js";
+import { getToken } from "../middlewares/auth/Jwt.js";
 import { Utilisateur } from "../models/Utilisateur.js";
 import { utilisateurService } from "../services/UserService.js";
 
@@ -52,11 +53,11 @@ class UserController {
     const { login, mot_de_passe } = req.body;
     try {
       const utilisateur = new Utilisateur({login:login, mot_de_passe:mot_de_passe});
-      const authenticated = await this.#userService.authenticateUser(utilisateur);
-      if (!authenticated) { 
+      const payload = await this.#userService.getUserData(utilisateur);
+      if (!payload) { 
         res.status(HttpStatus.UNAUTHORIZED.code).json({message: HttpStatus.UNAUTHORIZED.message}); 
       } else {
-        res.status(HttpStatus.NO_CONTENT.code).json({ message: "L'utilisateur est authentifié." });
+        res.status(HttpStatus.OK.code).json({ token: getToken(payload) });
       }
     } catch (err) {
       this.handleError(err, res);

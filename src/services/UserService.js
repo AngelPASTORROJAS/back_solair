@@ -10,9 +10,11 @@ class UserService {
     this.#sql = {
       SELECT_UTILISATEURS : "SELECT id, login FROM utilisateur",
       SELECT_UTILISATEUR : "SELECT id, login, email FROM utilisateur WHERE id = ?",
+      SELECT_UTILISATEUR_BY_LOGIN: "SELECT id, login, email FROM utilisateur WHERE login = ?",
       CREATE_UTILISATEUR: "INSERT INTO utilisateur (login, email, mot_de_passe) VALUES (?, ?, ?)",
       UPDATE_UTILISATEUR: "UPDATE utilisateur SET first_name = ?, last_name = ?, email = ?, address = ?, diagnos",
-      SELECT_UTILISATEUR_PASSWORD: "SELECT mot_de_passe FROM utilisateur WHERE login = ?"
+      SELECT_UTILISATEUR_PASSWORD: "SELECT mot_de_passe FROM utilisateur WHERE login = ?",
+      SELECT_UTILISATEUR_ROLES: "SELECT r.id, r.nom FROM role r INNER JOIN utilisateur_role ur ON r.id = ur.role_id INNER JOIN utilisateur u ON ur.utilisateur_id = u.id WHERE u.login = ?"
     };
   }
 
@@ -80,6 +82,19 @@ class UserService {
     } else{
       return false;
     }
+  };
+
+  getUserData= async (utilisateur)=>{
+    const isAuthentificate = await this.authenticateUser(utilisateur);
+    if(!isAuthentificate){
+      throw new Error("L'utilisateur n'est pas authentifier");
+    }
+    const res_utilisateur = await this.#db.query(this.#sql.SELECT_UTILISATEUR_BY_LOGIN,[utilisateur.login]);
+    let res_roles = await this.#db.query(this.#sql.SELECT_UTILISATEUR_ROLES,[utilisateur.login]);
+    if(res_roles.length==0){
+      res_roles=[];
+    }
+    return {utilisateur: res_utilisateur[0], roles: res_roles};
   };
 
   /*
