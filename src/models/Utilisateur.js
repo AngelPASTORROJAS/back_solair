@@ -57,7 +57,7 @@ class Utilisateur {
     const max_length_login = 50;
     const max_length_mot_de_passe = 60;
     const max_lenght_email = 256;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/; //https://regexr.com/3e48o
 
     if (id !== undefined) {
       if (typeof id !== "number") {
