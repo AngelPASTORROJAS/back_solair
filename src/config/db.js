@@ -4,7 +4,7 @@ import {
   DB_USER,
   DB_PASSWORD,
   DB_DATABASE,
-  DB_PORT,
+  DB_PORT
 } from "./config.js";
 
 /** The `Database` class creates a connection pool to a MySQL database
