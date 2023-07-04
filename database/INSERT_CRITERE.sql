@@ -67,9 +67,5 @@ INSERT INTO role (nom, description) VALUES
 ('invité', "Rôle d'invité avec un accès limité."),
 ('modérateur', 'Rôle de modérateur avec des privilèges de modération.');
 
-INSERT INTO utilisateur_role (role_id, utilisateur_id) VALUES 
-(1, 1),
-(2, 1),
-(3, 2),
-(3, 3),
-(4, 4);
+INSERT INTO utilisateur_role (role_id, utilisateur_id) 
+VALUES (1, 1), (2, 1), (3, 2), (3, 3), (4, 4);
