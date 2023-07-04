@@ -8,7 +8,7 @@ class DestinationService {
     this.#sql = {
       SELECT_DESTINATIONS : "SELECT id, titre, url_image, article FROM destination",
       SELECT_DESTINATION : "SELECT id, titre, url_image, article FROM destination WHERE id = ?",
-      SELECT_DESTINATION_RANDOM: "SELECT id, titre, url_image, article, article FROM destination order by RAND() LIMIT 1",
+      SELECT_DESTINATION_RANDOM: "SELECT id, nom, titre, url_image, article, article FROM destination order by RAND() LIMIT 1",
       CREATE_DESTINATION: "INSERT INTO destination (titre, url_image, article) VALUES (?, ?, ?)"
     };
   }
@@ -59,7 +59,8 @@ class DestinationService {
   };
 
   getRandomDestination = async ( ) => {
-    return this.#db.query(this.#sql.SELECT_DESTINATION_RANDOM);
+    const result = await this.#db.query(this.#sql.SELECT_DESTINATION_RANDOM);
+    return result[0];
   };
 }
 
