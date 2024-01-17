@@ -10,7 +10,7 @@ describe("Utilisateur", () => {
       expect(utilisateur.id).toBeUndefined();
       expect(utilisateur.login).toBeUndefined();
       expect(utilisateur.mot_de_passe).toBeUndefined();
-      expect(utilisateur.email).toBeUndefined();
+      expect(utilisateur.mail).toBeUndefined();
       expect(utilisateur.utilisateur_role).toBeUndefined();
       expect(utilisateur.utilisateur_destination).toBeUndefined();
     });
@@ -22,7 +22,7 @@ describe("Utilisateur", () => {
         id: 1,
         login: "test",
         mot_de_passe: "test123",
-        email: "test@example.com",
+        mail: "test@example.com",
         utilisateur_role: utilisateurRole,
         utilisateur_destination: utilisateurDestination,
       });
@@ -30,7 +30,7 @@ describe("Utilisateur", () => {
       expect(utilisateur.id).toBe(1);
       expect(utilisateur.login).toBe("test");
       expect(utilisateur.mot_de_passe).toBe("test123");
-      expect(utilisateur.email).toBe("test@example.com");
+      expect(utilisateur.mail).toBe("test@example.com");
       expect(utilisateur.utilisateur_role).toBe(utilisateurRole);
       expect(utilisateur.utilisateur_destination).toBe(utilisateurDestination);
     });
@@ -69,22 +69,22 @@ describe("Utilisateur", () => {
       expect(() => new Utilisateur({ mot_de_passe: 123 })).toThrow(TypeError);
     });
 
-    it("should throw an error if email exceeds maximum length", () => {
-      const email = "a".repeat(257);
-      expect(() => new Utilisateur({ email })).toThrowError(
-        "email must not exceed a maximum length 256"
+    it("should throw an error if mail exceeds maximum length", () => {
+      const mail = "a".repeat(257);
+      expect(() => new Utilisateur({ mail })).toThrowError(
+        "mail must not exceed a maximum length 256"
       );
     });
 
-    it("should throw an error if email is not valid", () => {
-      const email = "invalid-email";
-      expect(() => new Utilisateur({ email })).toThrowError(
-        "email must be valid"
+    it("should throw an error if mail is not valid", () => {
+      const mail = "invalid-mail";
+      expect(() => new Utilisateur({ mail })).toThrowError(
+        "mail must be valid"
       );
     });
 
-    it("should throw a type error with a non-string email", () => {
-      expect(() => new Utilisateur({ email: 123 })).toThrow(TypeError);
+    it("should throw a type error with a non-string mail", () => {
+      expect(() => new Utilisateur({ mail: 123 })).toThrow(TypeError);
     });
 
     it("should throw an error if utilisateur_role is not a UtilisateurRole", () => {

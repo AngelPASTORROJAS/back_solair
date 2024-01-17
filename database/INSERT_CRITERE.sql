@@ -48,7 +48,7 @@ INSERT INTO destination (nom, url_image, description, titre, article) VALUES
 ('Annecy', 'https://a.cdn-hotels.com/gdcs/production163/d1212/f77ef382-1881-4a5d-b068-eea2cdc3ab27.jpg', 'Vue du lac d\'Annecy', 'Découvrez la ville lacustre', 'Annecy, la ville lacustre, est une destination de choix pour les amoureux de la nature et de la montagne. Découvrez son célèbre lac, visitez son château médiéval, et promenez-vous dans sa charmante vieille ville.');
 
 
-INSERT INTO utilisateur (login, mot_de_passe, email) VALUES 
+INSERT INTO utilisateur (login, mot_de_passe, mail) VALUES 
 ('john_doe', 'password123', 'john.doe@example.com'),
 ('jane_doe', 'password456', 'jane.doe@example.com'),
 ('bob_smith', 'password789', 'bob.smith@example.com'),
