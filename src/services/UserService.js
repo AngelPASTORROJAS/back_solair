@@ -9,10 +9,10 @@ class UserService {
     this.#db = db;
     this.#sql = {
       SELECT_UTILISATEURS : "SELECT id, login FROM utilisateur",
-      SELECT_UTILISATEUR : "SELECT id, login, mail FROM utilisateur WHERE id = ?",
-      SELECT_UTILISATEUR_BY_LOGIN: "SELECT id, login, mail FROM utilisateur WHERE login = ?",
-      CREATE_UTILISATEUR: "INSERT INTO utilisateur (login, mail, mot_de_passe) VALUES (?, ?, ?)",
-      UPDATE_UTILISATEUR: "UPDATE utilisateur SET first_name = ?, last_name = ?, mail = ?, address = ?, diagnos",
+      SELECT_UTILISATEUR : "SELECT id, login, email FROM utilisateur WHERE id = ?",
+      SELECT_UTILISATEUR_BY_LOGIN: "SELECT id, login, email FROM utilisateur WHERE login = ?",
+      CREATE_UTILISATEUR: "INSERT INTO utilisateur (login, email, mot_de_passe) VALUES (?, ?, ?)",
+      UPDATE_UTILISATEUR: "UPDATE utilisateur SET first_name = ?, last_name = ?, email = ?, address = ?, diagnos",
       SELECT_UTILISATEUR_PASSWORD: "SELECT mot_de_passe FROM utilisateur WHERE login = ?",
       SELECT_UTILISATEUR_ROLES: "SELECT r.id, r.nom FROM role r INNER JOIN utilisateur_role ur ON r.id = ur.role_id INNER JOIN utilisateur u ON ur.utilisateur_id = u.id WHERE u.login = ?"
     };
@@ -54,10 +54,10 @@ class UserService {
     if(typeof utilisateur !== typeof new Utilisateur()){
       throw new TypeError("Invalid type to createUser");
     }
-    if(!utilisateur.mail || !utilisateur.login || !utilisateur.mot_de_passe){
+    if(!utilisateur.email || !utilisateur.login || !utilisateur.mot_de_passe){
       throw new Error("Invalid proprieties to createUser");
     }
-    const values = [utilisateur.login, utilisateur.mail, await encryptPassword(utilisateur.mot_de_passe)];
+    const values = [utilisateur.login, utilisateur.email, await encryptPassword(utilisateur.mot_de_passe)];
     const result = await this.#db.query(this.#sql.CREATE_UTILISATEUR, values);
     return result !== undefined;
   };
@@ -98,19 +98,19 @@ class UserService {
   };
 
   /*
-  patchUserById = async (id, pseudo, mail, motdepasse) => {
+  patchUserById = async (id, pseudo, email, motdepasse) => {
     const values = [];
     const clause = [];
-    if(!pseudo || !mail || !motdepasse ){
+    if(!pseudo || !email || !motdepasse ){
       return true;
     }
     if (pseudo) {
       clause.push("login");
       values.push(pseudo);
     }
-    if (mail) {
-      clause.push("mail");
-      values.push(mail);
+    if (email) {
+      clause.push("email");
+      values.push(email);
     }
     if (motdepasse) {
       clause.push("mot_de_passe");

@@ -31,11 +31,11 @@ class UserController {
   };
 
   createUser = async (req, res) => {
-    const { login, mail, mot_de_passe } = req.body;
+    const { login, email, mot_de_passe } = req.body;
     try {
       const utilisateur = new Utilisateur({
         login: login,
-        mail: mail,
+        email: email,
         mot_de_passe: mot_de_passe,
       });
       const created = await this.#userService.createUser(utilisateur);
@@ -68,10 +68,10 @@ class UserController {
   /*
   patchUserById = async (req, res) => {
     const userId = req.params.id;
-    const { pseudo, mail, motdepasse } = req.body;
+    const { pseudo, email, motdepasse } = req.body;
 
     try {
-      const updated = await this.#userService.patchUserById(userId,pseudo,mail,motdepasse);
+      const updated = await this.#userService.patchUserById(userId,pseudo,email,motdepasse);
       if (!updated) { throw new HttpError(HttpStatus.NOT_FOUND); }
       res.status(HttpStatus.OK.code).json({ message: "L'utilisateur a été mis à jour avec succès." });
     } catch (err) {
