@@ -25,10 +25,10 @@ class Utilisateur {
   mot_de_passe;
 
   /**
-   * L'adresse email Utilisateur.
+   * L'adresse mail Utilisateur.
    * @type {String | undefined}
    */
-  email;
+  mail;
 
   /**
    * utilisateur_role Utilisateur.
@@ -49,15 +49,15 @@ class Utilisateur {
    * @param {number} [options.id] - L'identifiant unique Utilisateur.
    * @param {string} [options.login] - Le nom d'utilisateur Utilisateur.
    * @param {string} [options.mot_de_passe] - Le mot de passe Utilisateur.
-   * @param {string} [options.email] - L'adresse e-mail Utilisateur.
+   * @param {string} [options.mail] - L'adresse e-mail Utilisateur.
    * @param {UtilisateurRole} [options.utilisateur_role] - UtilisateurRole Utilisateur.
    * @param {UtilisateurDestination} [options.utilisateur_destination] - UtilisateurDestination Utilisateur.
    */
-  constructor({ id, login, mot_de_passe, email, utilisateur_role, utilisateur_destination } = {}) {
+  constructor({ id, login, mot_de_passe, mail, utilisateur_role, utilisateur_destination } = {}) {
     const max_length_login = 50;
     const max_length_mot_de_passe = 60;
-    const max_lenght_email = 256;
-    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/; //https://regexr.com/3e48o
+    const max_lenght_mail = 256;
+    const mailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/; //https://regexr.com/3e48o
 
     if (id !== undefined) {
       if (typeof id !== "number") {
@@ -93,19 +93,19 @@ class Utilisateur {
       this.mot_de_passe = mot_de_passe;
     }
 
-    if (email !== undefined) {
-      if (typeof email !== "string" && typeof email !== "undefined") {
-        throw new TypeError("email must be a string");
+    if (mail !== undefined) {
+      if (typeof mail !== "string" && typeof mail !== "undefined") {
+        throw new TypeError("mail must be a string");
       }
-      if (max_lenght_email < email.length) {
+      if (max_lenght_mail < mail.length) {
         throw Error(
-          `email must not exceed a maximum length ${max_lenght_email}`
+          `mail must not exceed a maximum length ${max_lenght_mail}`
         );
       }
-      if (!emailRegex.test(email)) {
-        throw new Error("email must be valid");
+      if (!mailRegex.test(mail)) {
+        throw new Error("mail must be valid");
       }
-      this.email = email;
+      this.mail = mail;
     }
 
     if (utilisateur_role !== undefined) {

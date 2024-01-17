@@ -31,11 +31,11 @@ class UserController {
   };
 
   createUser = async (req, res) => {
-    const { login, email, mot_de_passe } = req.body;
+    const { login, mail, mot_de_passe } = req.body;
     try {
       const utilisateur = new Utilisateur({
         login: login,
-        email: email,
+        mail: mail,
         mot_de_passe: mot_de_passe,
       });
       const created = await this.#userService.createUser(utilisateur);
